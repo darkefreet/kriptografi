@@ -14,8 +14,13 @@ public class Vigenere256 {
     public static String encrypt(String text, String key) {
         String result = "";
         for (int i = 0; i < text.length(); i++) {
-            int asciiCode = (int)text.charAt(i) + (int)(key.charAt(i % key.length()));
-            result += (char)(asciiCode % 255);
+            if (helpers.Character.isAsciiCharacter(text.charAt(i))) {
+                int asciiCode = (int)text.charAt(i) + (int)(key.charAt(i % key.length()));
+                result += (char)(asciiCode % 255);
+            } else {
+                System.out.println("zzzz");
+                result += text.charAt(i);
+            }
         }
         return result;
     }
@@ -23,8 +28,12 @@ public class Vigenere256 {
     public static String decrypt(String text, String key) {
         String result = "";
         for (int i = 0; i < text.length(); i++) {
-            int asciiCode = (int)text.charAt(i) - (int)(key.charAt(i % key.length())) + 255;
-            result += (char)(asciiCode % 255);
+            if (helpers.Character.isAsciiCharacter(text.charAt(i))) {
+                int asciiCode = (int)text.charAt(i) - (int)(key.charAt(i % key.length())) + 255;
+                result += (char)(asciiCode % 255);
+            } else {
+                result += text.charAt(i);
+            }
         }
         return result;
     }

@@ -22,8 +22,12 @@ public class VigenereModification {
     public static String encrypt(String text, String key) {
         String result = "";
         for (int i = 0; i < text.length(); i++) {
-            int asciiCode = (int)text.charAt(i) + (int)(key.charAt(i % key.length()));
-            result += (char)(asciiCode % 255);
+            if (helpers.Character.isAsciiCharacter(text.charAt(i))) {
+                int asciiCode = (int)text.charAt(i) + (int)(key.charAt(i % key.length()));
+                result += (char)(asciiCode % 255);
+            } else {
+                result += text.charAt(i);
+            }
             if ((i % key.length()) == key.length() - 1) {
                 key = shiftKey(key);
             }
@@ -34,8 +38,12 @@ public class VigenereModification {
     public static String decrypt(String text, String key) {
         String result = "";
         for (int i = 0; i < text.length(); i++) {
-            int asciiCode = (int)text.charAt(i) - (int)(key.charAt(i % key.length())) + 255;
-            result += (char)(asciiCode % 255);
+            if (helpers.Character.isAsciiCharacter(text.charAt(i))) {
+                int asciiCode = (int)text.charAt(i) - (int)(key.charAt(i % key.length())) + 255;
+                result += (char)(asciiCode % 255);
+            } else {
+                result += text.charAt(i);
+            }
             if ((i % key.length()) == key.length() - 1) {
                 key = shiftKey(key);
             }
