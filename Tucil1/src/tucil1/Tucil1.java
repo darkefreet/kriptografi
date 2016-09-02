@@ -16,10 +16,13 @@ public class Tucil1 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        System.out.println("Halo");
         
         Vigenere26 vig = new Vigenere26();
         System.out.println(vig.decrypt("hkfzn heafg iakdl larnc i", "akulahsangkakala"));
+        
+        Playfair pf = new Playfair();
+        pf.encrypt("test", "dbcgv");
+        pf.encrypt("test", "alamozabkbtd");
         // TODO code application logic here
     }
     
