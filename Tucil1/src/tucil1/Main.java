@@ -5,7 +5,9 @@
  */
 package tucil1;
 
+import helpers.GroupButtonUtils;
 import algoritma.*;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -14,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -40,7 +43,6 @@ public class Main extends javax.swing.JFrame {
         chipperTextFormatOptions = new javax.swing.ButtonGroup();
         algorithmOptions = new javax.swing.ButtonGroup();
         inputTextLabel = new javax.swing.JLabel();
-        inputTextField = new javax.swing.JTextField();
         chipperTextFormatAsItIs = new javax.swing.JRadioButton();
         chipperTextFormatNoSpace = new javax.swing.JRadioButton();
         chipperTextFormat5Words = new javax.swing.JRadioButton();
@@ -48,7 +50,7 @@ public class Main extends javax.swing.JFrame {
         keyField = new javax.swing.JTextField();
         encryptButton = new javax.swing.JButton();
         decryptButton = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        resultPane = new javax.swing.JScrollPane();
         result = new javax.swing.JTextArea();
         saveButton = new javax.swing.JButton();
         algorithmVigenere26 = new javax.swing.JRadioButton();
@@ -57,6 +59,9 @@ public class Main extends javax.swing.JFrame {
         algorithmModifiedVigenere = new javax.swing.JRadioButton();
         Playfair = new javax.swing.JRadioButton();
         jLabel2 = new javax.swing.JLabel();
+        loadFileButton = new javax.swing.JButton();
+        inputPane = new javax.swing.JScrollPane();
+        input = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -90,7 +95,7 @@ public class Main extends javax.swing.JFrame {
 
         result.setColumns(20);
         result.setRows(5);
-        jScrollPane1.setViewportView(result);
+        resultPane.setViewportView(result);
 
         saveButton.setText("Save");
         saveButton.setToolTipText("");
@@ -120,6 +125,18 @@ public class Main extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Tugas Kecil 1 - BKDN (Bulu Ketek Dawa Ngruwel)");
 
+        loadFileButton.setText("Load File");
+        loadFileButton.setToolTipText("");
+        loadFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadFileButtonActionPerformed(evt);
+            }
+        });
+
+        input.setColumns(20);
+        input.setRows(5);
+        inputPane.setViewportView(input);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -127,10 +144,10 @@ public class Main extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(inputPane)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 576, Short.MAX_VALUE)
+                    .addComponent(resultPane, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 576, Short.MAX_VALUE)
                     .addComponent(keyField)
-                    .addComponent(inputTextField, javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(10, 10, 10)
                         .addComponent(algorithmLabel)
@@ -155,15 +172,18 @@ public class Main extends javax.swing.JFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(decryptButton))))))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(inputTextLabel)
-                            .addComponent(keyLabel)
-                            .addGroup(layout.createSequentialGroup()
+                        .addComponent(inputTextLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(loadFileButton))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(chipperTextFormatAsItIs)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(chipperTextFormatNoSpace)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(chipperTextFormat5Words)))
+                                .addComponent(chipperTextFormat5Words))
+                            .addComponent(keyLabel, javax.swing.GroupLayout.Alignment.LEADING))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -173,10 +193,12 @@ public class Main extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(inputTextLabel)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(inputTextLabel)
+                    .addComponent(loadFileButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(inputTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(inputPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(keyLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(keyField, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -191,13 +213,13 @@ public class Main extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(Playfair)
                     .addComponent(algorithmVigenere256, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(chipperTextFormatAsItIs)
                     .addComponent(chipperTextFormatNoSpace)
                     .addComponent(chipperTextFormat5Words))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(resultPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(saveButton)
                 .addContainerGap())
@@ -209,7 +231,7 @@ public class Main extends javax.swing.JFrame {
     private void encryptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_encryptButtonActionPerformed
         // TODO add your handling code here:
         String algorithm = GroupButtonUtils.getSelectedButtonText(algorithmOptions);
-        String encryptedText = encryptText(algorithm, inputTextField.getText(), keyField.getText());
+        String encryptedText = encryptText(algorithm, input.getText(), keyField.getText());
         result.setText(formatText(encryptedText,GroupButtonUtils.getSelectedButtonText(chipperTextFormatOptions)));
         //result.setText("aa");
     }//GEN-LAST:event_encryptButtonActionPerformed
@@ -238,9 +260,21 @@ public class Main extends javax.swing.JFrame {
     private void decryptButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_decryptButtonActionPerformed
         // TODO add your handling code here:
         String algorithm = GroupButtonUtils.getSelectedButtonText(algorithmOptions);
-        String decryptedText = decryptText(algorithm, inputTextField.getText(), keyField.getText());
+        String decryptedText = decryptText(algorithm, input.getText(), keyField.getText());
         result.setText(decryptedText);
     }//GEN-LAST:event_decryptButtonActionPerformed
+
+    private void loadFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadFileButtonActionPerformed
+        // TODO add your handling code here:
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            String path = selectedFile.getAbsolutePath();
+            input.setText(helpers.File.read(path));
+        }
+    }//GEN-LAST:event_loadFileButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -345,13 +379,15 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.ButtonGroup chipperTextFormatOptions;
     private javax.swing.JButton decryptButton;
     private javax.swing.JButton encryptButton;
-    private javax.swing.JTextField inputTextField;
+    private javax.swing.JTextArea input;
+    private javax.swing.JScrollPane inputPane;
     private javax.swing.JLabel inputTextLabel;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField keyField;
     private javax.swing.JLabel keyLabel;
+    private javax.swing.JButton loadFileButton;
     private javax.swing.JTextArea result;
+    private javax.swing.JScrollPane resultPane;
     private javax.swing.JButton saveButton;
     // End of variables declaration//GEN-END:variables
 }

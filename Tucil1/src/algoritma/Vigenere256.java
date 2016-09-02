@@ -17,8 +17,9 @@ public class Vigenere256 {
             if (helpers.Character.isAsciiCharacter(text.charAt(i))) {
                 int asciiCode = (int)text.charAt(i) + (int)(key.charAt(i % key.length()));
                 result += (char)(asciiCode % 255);
+                System.out.println((asciiCode % 255) + ":" + (char)(asciiCode % 255));
             } else {
-                System.out.println("zzzz");
+                System.out.println("Non-ASCII");
                 result += text.charAt(i);
             }
         }

@@ -16,6 +16,7 @@ public class VigenereModification {
         for (int i = 0; i < key.length(); i++) {
             newKey += (char)((key.charAt(i) + 1) % 255);
         }
+        System.out.println("KEY: " + newKey);
         return newKey;
     }
     
@@ -23,9 +24,12 @@ public class VigenereModification {
         String result = "";
         for (int i = 0; i < text.length(); i++) {
             if (helpers.Character.isAsciiCharacter(text.charAt(i))) {
+                System.out.println("char: " + text.charAt(i));
                 int asciiCode = (int)text.charAt(i) + (int)(key.charAt(i % key.length()));
                 result += (char)(asciiCode % 255);
+                System.out.println((asciiCode % 255) + ":" + (char)(asciiCode % 255));
             } else {
+                System.out.println("Non-ASCII");
                 result += text.charAt(i);
             }
             if ((i % key.length()) == key.length() - 1) {
