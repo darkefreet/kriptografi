@@ -19,7 +19,7 @@ public class Tucil1 {
         System.out.println("Halo");
         
         Vigenere26 vig = new Vigenere26();
-        System.out.println(vig.Decrypt("hkfzn heafg iakdl larnc i", "akulahsangkakala"));
+        System.out.println(vig.decrypt("hkfzn heafg iakdl larnc i", "akulahsangkakala"));
         // TODO code application logic here
     }
     
