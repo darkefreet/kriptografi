@@ -286,7 +286,8 @@ public class Main extends javax.swing.JFrame {
             case "Vigenere 256":
                 encryptedText = Vigenere256.encrypt(text, key);
                 break;
-            case "ModifiedVigenere":
+            case "Modified Vigenere":
+                encryptedText = VigenereModification.encrypt(text, key);
                 break;
             case "Playfair":
                 break;
@@ -303,7 +304,8 @@ public class Main extends javax.swing.JFrame {
             case "Vigenere 256":
                 decrptedText = Vigenere256.decrypt(text, key);
                 break;
-            case "ModifiedVigenere":
+            case "Modified Vigenere":
+                decrptedText = VigenereModification.decrypt(text, key);
                 break;
             case "Playfair":
                 break;
