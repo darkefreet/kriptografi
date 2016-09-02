@@ -19,7 +19,7 @@ public class Tucil1 {
         System.out.println("Halo");
         
         Vigenere26 vig = new Vigenere26();
-        System.out.println(vig.Encrypt("Halo nama saya adalah tri", "akulahsangkakala",2));
+        System.out.println(vig.Decrypt("hkfzn heafg iakdl larnc i", "akulahsangkakala"));
         // TODO code application logic here
     }
     
