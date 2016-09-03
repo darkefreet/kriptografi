@@ -32,10 +32,10 @@
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
+                  <Component id="inputPane" max="32767" attributes="0"/>
                   <Component id="jLabel2" max="32767" attributes="0"/>
-                  <Component id="jScrollPane1" alignment="0" pref="576" max="32767" attributes="0"/>
+                  <Component id="resultPane" alignment="0" pref="576" max="32767" attributes="0"/>
                   <Component id="keyField" alignment="1" max="32767" attributes="0"/>
-                  <Component id="inputTextField" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
                       <Component id="algorithmLabel" min="-2" max="-2" attributes="0"/>
@@ -68,9 +68,12 @@
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="inputTextLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="keyLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="inputTextLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="loadFileButton" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="1" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="chipperTextFormatAsItIs" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
@@ -78,6 +81,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="chipperTextFormat5Words" min="-2" max="-2" attributes="0"/>
                           </Group>
+                          <Component id="keyLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
@@ -92,10 +96,13 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jLabel2" min="-2" pref="24" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="inputTextLabel" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="inputTextLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="loadFileButton" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="inputTextField" min="-2" pref="57" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="inputPane" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Component id="keyLabel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="keyField" min="-2" pref="31" max="-2" attributes="0"/>
@@ -112,14 +119,14 @@
                   <Component id="Playfair" min="-2" max="-2" attributes="0"/>
                   <Component id="algorithmVigenere256" min="-2" pref="23" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="28" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="chipperTextFormatAsItIs" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="chipperTextFormatNoSpace" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="chipperTextFormat5Words" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="jScrollPane1" min="-2" max="-2" attributes="0"/>
+              <Component id="resultPane" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="saveButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -132,8 +139,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Masukkan text:"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="inputTextField">
     </Component>
     <Component class="javax.swing.JRadioButton" name="chipperTextFormatAsItIs">
       <Properties>
@@ -183,7 +188,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="decryptButtonActionPerformed"/>
       </Events>
     </Component>
-    <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+    <Container class="javax.swing.JScrollPane" name="resultPane">
       <AuxValues>
         <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
       </AuxValues>
@@ -255,5 +260,29 @@
         <Property name="text" type="java.lang.String" value="Tugas Kecil 1 - BKDN (Bulu Ketek Dawa Ngruwel)"/>
       </Properties>
     </Component>
+    <Component class="javax.swing.JButton" name="loadFileButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Load File"/>
+        <Property name="toolTipText" type="java.lang.String" value=""/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loadFileButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Container class="javax.swing.JScrollPane" name="inputPane">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTextArea" name="input">
+          <Properties>
+            <Property name="columns" type="int" value="20"/>
+            <Property name="rows" type="int" value="5"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
   </SubComponents>
 </Form>
