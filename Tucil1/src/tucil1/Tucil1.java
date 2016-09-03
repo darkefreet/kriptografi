@@ -21,7 +21,7 @@ public class Tucil1 {
         System.out.println(vig.decrypt("hkfzn heafg iakdl larnc i", "akulahsangkakala"));
         
         Playfair pf = new Playfair();
-        System.out.println(pf.decrypt("yafnfbzuflvrflbnvnagbd", "dbcgvazzkbkn"));
+        System.out.println(pf.decrypt("yafnf  . ? // bzuflv rflb nvnagbdh ;;  nhn", "dbcgvazzkbkn"));
         // TODO code application logic here
     }
     

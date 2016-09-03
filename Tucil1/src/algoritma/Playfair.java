@@ -79,8 +79,10 @@ public class Playfair {
         }
     }
     
-    private ArrayList makeDigraf(char[] charArray , int option){
-        ArrayList digraf =  new ArrayList();
+    private String makeDigraf(char[] charArray , int option){
+        ArrayList digraf = new ArrayList();
+        String res="";
+        String temp="";
         if(charArray.length >= 1){
             boolean newPair = true;
             int i = 0;
@@ -94,22 +96,85 @@ public class Playfair {
                         //option 0 = encryption purpose only
                         if((option==0)&&(charArray[i]==digraf.get(digraf.size()-1).toString().charAt(0))){
                             digraf.add('z');
+                            char a = digraf.get(digraf.size()-2).toString().charAt(0);
+                            char b = digraf.get(digraf.size()-1).toString().charAt(0);
+                            String enc = encryptDigraf(a,b);
+                            res = res+ enc.charAt(0) + temp + enc.charAt(1);
+                            temp="";
+                            
                             digraf.add(charArray[i]);
                         }
                         else{
                             digraf.add(charArray[i]);
+                            char a = digraf.get(digraf.size()-2).toString().charAt(0);
+                            char b = digraf.get(digraf.size()-1).toString().charAt(0);
                             newPair = true;
+                            String enc="";
+                            if(option==0){
+                                enc = encryptDigraf(a,b);
+                            }else{
+                                enc = decryptDigraf(a,b);
+                            }
+                            res = res+ enc.charAt(0) + temp + enc.charAt(1);
+                            temp="";
                         }
                     }
+                }else{
+                    temp+=charArray[i];
                 }
                 i++;
             }
             if(!newPair){
                 digraf.add('z');
+                char a = digraf.get(digraf.size()-2).toString().charAt(0);
+                char b = digraf.get(digraf.size()-1).toString().charAt(0);            
+                String enc="";
+                if(option==0){
+                    enc = encryptDigraf(a,b);
+                }else{
+                    enc = decryptDigraf(a,b);
+                }
+                res = res+ enc.charAt(0) + temp + enc.charAt(1);
+                temp="";
             }
         }    
-//        System.out.println(digraf);
-        return digraf;
+        
+//      System.out.println(digraf);
+        return res;
+    }
+    
+    private String encryptDigraf(char a,char b){
+        String res ="";
+        if(charPosition[a-'a'].getX()==charPosition[b-'a'].getX()){
+            res+=playFairKey[(charPosition[a-'a'].getX()+1)%5][charPosition[a-'a'].getY()];               
+            res+=playFairKey[(charPosition[b-'a'].getX()+1)%5][charPosition[b-'a'].getY()];
+        }else if(charPosition[a-'a'].getY()==charPosition[b-'a'].getY()){
+            res+=playFairKey[charPosition[a-'a'].getX()][(charPosition[a-'a'].getY()+1)%5];               
+            res+=playFairKey[charPosition[b-'a'].getX()][(charPosition[b-'a'].getY()+1)%5];
+        }else{
+            res+=playFairKey[charPosition[a-'a'].getX()][charPosition[b-'a'].getY()];               
+            res+=playFairKey[charPosition[b-'a'].getX()][charPosition[a-'a'].getY()];
+        }
+        return res;
+    }
+    
+    private String decryptDigraf(char a, char b){
+        String res = "";
+        if(charPosition[a-'a'].getX()==charPosition[b-'a'].getX()){
+            int x = (charPosition[a-'a'].getX()-1)%5;if(x < 0){x = 5+x;}
+            int y = (charPosition[b-'a'].getX()-1)%5;if(y < 0){y = 5+y;}
+            res+=playFairKey[x][charPosition[a-'a'].getY()];               
+            res+=playFairKey[y][charPosition[b-'a'].getY()];
+        }else if(charPosition[a-'a'].getY()==charPosition[b-'a'].getY()){
+            int x = (charPosition[a-'a'].getY()-1)%5;if(x < 0){x = 5+x;}
+            int y = (charPosition[b-'a'].getY()-1)%5;if(y < 0){y = 5+y;}
+            res+=playFairKey[charPosition[a-'a'].getX()][x];               
+            res+=playFairKey[charPosition[b-'a'].getX()][y];
+        }else{
+            res+=playFairKey[charPosition[a-'a'].getX()][charPosition[b-'a'].getY()];               
+            res+=playFairKey[charPosition[b-'a'].getX()][charPosition[a-'a'].getY()];
+        }
+        return res;
     }
    
     public String encrypt(String plaintext, String key){
@@ -118,54 +183,17 @@ public class Playfair {
         String res = "";        
         
         char[] charArray = plaintext.toLowerCase().toCharArray();
-        ArrayList digraf = makeDigraf(charArray,0);
-        
-        //DIGRAF HAS BEEN CREATED, NOW ENCRYPTING
-        for(int i=0;i<digraf.size();i+=2){
-            char a = digraf.get(i).toString().charAt(0);
-            char b = digraf.get(i+1).toString().charAt(0);
-            
-            if(charPosition[a-'a'].getX()==charPosition[b-'a'].getX()){
-                res+=playFairKey[(charPosition[a-'a'].getX()+1)%5][charPosition[a-'a'].getY()];               
-                res+=playFairKey[(charPosition[b-'a'].getX()+1)%5][charPosition[b-'a'].getY()];
-            }else if(charPosition[a-'a'].getY()==charPosition[b-'a'].getY()){
-                res+=playFairKey[charPosition[a-'a'].getX()][(charPosition[a-'a'].getY()+1)%5];               
-                res+=playFairKey[charPosition[b-'a'].getX()][(charPosition[b-'a'].getY()+1)%5];
-            }else{
-                res+=playFairKey[charPosition[a-'a'].getX()][charPosition[b-'a'].getY()];               
-                res+=playFairKey[charPosition[b-'a'].getX()][charPosition[a-'a'].getY()];
-            }
-        }
-//        System.out.println(res);
-        return res;
+   
+        //make a digraf and encrypt the message
+        return makeDigraf(charArray,0);
     }
     
     public String decrypt(String encrypted, String key){
         init(key);
         String res = "";
         char[] charArray = encrypted.toLowerCase().toCharArray();
-        ArrayList digraf =  makeDigraf(charArray,1);
-        //DIGRAF HAS BEEN CREATED, NOW DECRYPTING
-        for(int i=0;i<digraf.size();i+=2){
-            char a = digraf.get(i).toString().charAt(0);
-            char b = digraf.get(i+1).toString().charAt(0);
-            
-            if(charPosition[a-'a'].getX()==charPosition[b-'a'].getX()){
-                int x = (charPosition[a-'a'].getX()-1)%5;if(x < 0){x = 5+x;}
-                int y = (charPosition[b-'a'].getX()-1)%5;if(y < 0){y = 5+y;}
-                res+=playFairKey[x][charPosition[a-'a'].getY()];               
-                res+=playFairKey[y][charPosition[b-'a'].getY()];
-            }else if(charPosition[a-'a'].getY()==charPosition[b-'a'].getY()){
-                int x = (charPosition[a-'a'].getY()-1)%5;if(x < 0){x = 5+x;}
-                int y = (charPosition[b-'a'].getY()-1)%5;if(y < 0){y = 5+y;}
-                res+=playFairKey[charPosition[a-'a'].getX()][x];               
-                res+=playFairKey[charPosition[b-'a'].getX()][y];
-            }else{
-                res+=playFairKey[charPosition[a-'a'].getX()][charPosition[b-'a'].getY()];               
-                res+=playFairKey[charPosition[b-'a'].getX()][charPosition[a-'a'].getY()];
-            }
-        }
         
-        return res;
+        //make a digraf and decrypt the message
+        return makeDigraf(charArray,1);
     }
 }
