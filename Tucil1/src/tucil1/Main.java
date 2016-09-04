@@ -264,17 +264,7 @@ public class Main extends javax.swing.JFrame {
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
             String time = dateFormat.format(new Date());
             String filename = time + ".txt";
-
-            PrintWriter writer = null;
-            try {
-                writer = new PrintWriter(filename, "UTF-8");
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (UnsupportedEncodingException ex) {
-                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            writer.println(resultText);
-            writer.close();
+            helpers.File.write(filename, resultText);
         }
     }//GEN-LAST:event_saveButtonActionPerformed
 

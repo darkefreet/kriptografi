@@ -59,7 +59,7 @@ public class VigenereModification {
                 } else if (charAsciiCode == 257) {
                    charAsciiCode = 13;
                 }
-                
+
                 int asciiCode = charAsciiCode - (int)(key.charAt(i % key.length())) + 255;
                 result += (char)(asciiCode % 255);
             } else {
