@@ -27,6 +27,9 @@ public class VigenereModification {
                 System.out.println("char: " + text.charAt(i));
                 int asciiCode = (int)text.charAt(i) + (int)(key.charAt(i % key.length()));
                 result += (char)(asciiCode % 255);
+                if (asciiCode % 255 == 13) {
+                    System.out.println("13------------------------------");
+                }
                 System.out.println((asciiCode % 255) + ":" + (char)(asciiCode % 255));
             } else {
                 System.out.println("Non-ASCII");

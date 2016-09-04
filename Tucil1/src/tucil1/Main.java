@@ -40,12 +40,12 @@ public class Main extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        chipperTextFormatOptions = new javax.swing.ButtonGroup();
+        cipherTextFormatOptions = new javax.swing.ButtonGroup();
         algorithmOptions = new javax.swing.ButtonGroup();
         inputTextLabel = new javax.swing.JLabel();
-        chipperTextFormatAsItIs = new javax.swing.JRadioButton();
-        chipperTextFormatNoSpace = new javax.swing.JRadioButton();
-        chipperTextFormat5Words = new javax.swing.JRadioButton();
+        cipherTextFormatAsItIs = new javax.swing.JRadioButton();
+        cipherTextFormatNoSpace = new javax.swing.JRadioButton();
+        cipherTextFormat5Words = new javax.swing.JRadioButton();
         keyLabel = new javax.swing.JLabel();
         keyField = new javax.swing.JTextField();
         encryptButton = new javax.swing.JButton();
@@ -67,15 +67,15 @@ public class Main extends javax.swing.JFrame {
 
         inputTextLabel.setText("Masukkan text:");
 
-        chipperTextFormatOptions.add(chipperTextFormatAsItIs);
-        chipperTextFormatAsItIs.setSelected(true);
-        chipperTextFormatAsItIs.setText("Apa adanya");
+        cipherTextFormatOptions.add(cipherTextFormatAsItIs);
+        cipherTextFormatAsItIs.setSelected(true);
+        cipherTextFormatAsItIs.setText("Apa adanya");
 
-        chipperTextFormatOptions.add(chipperTextFormatNoSpace);
-        chipperTextFormatNoSpace.setText("Tanpa spasi");
+        cipherTextFormatOptions.add(cipherTextFormatNoSpace);
+        cipherTextFormatNoSpace.setText("Tanpa spasi");
 
-        chipperTextFormatOptions.add(chipperTextFormat5Words);
-        chipperTextFormat5Words.setText("5 Huruf");
+        cipherTextFormatOptions.add(cipherTextFormat5Words);
+        cipherTextFormat5Words.setText("5 Huruf");
 
         keyLabel.setText("Masukkan kunci:");
 
@@ -108,18 +108,38 @@ public class Main extends javax.swing.JFrame {
         algorithmOptions.add(algorithmVigenere26);
         algorithmVigenere26.setText("Vigenere 26");
         algorithmVigenere26.setToolTipText("");
+        algorithmVigenere26.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                algorithmVigenere26ActionPerformed(evt);
+            }
+        });
 
         algorithmOptions.add(algorithmVigenere256);
         algorithmVigenere256.setText("Vigenere 256");
         algorithmVigenere256.setToolTipText("");
+        algorithmVigenere256.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                algorithmVigenere256ActionPerformed(evt);
+            }
+        });
 
         algorithmLabel.setText("Algoritma");
 
         algorithmOptions.add(algorithmModifiedVigenere);
         algorithmModifiedVigenere.setText("Modified Vigenere");
+        algorithmModifiedVigenere.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                algorithmModifiedVigenereActionPerformed(evt);
+            }
+        });
 
         algorithmOptions.add(Playfair);
         Playfair.setText("Playfair");
+        Playfair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PlayfairActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -178,11 +198,11 @@ public class Main extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(chipperTextFormatAsItIs)
+                                .addComponent(cipherTextFormatAsItIs)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(chipperTextFormatNoSpace)
+                                .addComponent(cipherTextFormatNoSpace)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(chipperTextFormat5Words))
+                                .addComponent(cipherTextFormat5Words))
                             .addComponent(keyLabel, javax.swing.GroupLayout.Alignment.LEADING))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -215,9 +235,9 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(algorithmVigenere256, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(chipperTextFormatAsItIs)
-                    .addComponent(chipperTextFormatNoSpace)
-                    .addComponent(chipperTextFormat5Words))
+                    .addComponent(cipherTextFormatAsItIs)
+                    .addComponent(cipherTextFormatNoSpace)
+                    .addComponent(cipherTextFormat5Words))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(resultPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -232,7 +252,7 @@ public class Main extends javax.swing.JFrame {
         // TODO add your handling code here:
         String algorithm = GroupButtonUtils.getSelectedButtonText(algorithmOptions);
         String encryptedText = encryptText(algorithm, input.getText(), keyField.getText());
-        result.setText(formatText(encryptedText,GroupButtonUtils.getSelectedButtonText(chipperTextFormatOptions)));
+        result.setText(formatText(encryptedText,GroupButtonUtils.getSelectedButtonText(cipherTextFormatOptions)));
         //result.setText("aa");
     }//GEN-LAST:event_encryptButtonActionPerformed
 
@@ -252,6 +272,7 @@ public class Main extends javax.swing.JFrame {
             } catch (UnsupportedEncodingException ex) {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
+            resultText.replaceAll(null, "\r\n");
             writer.println(resultText);
             writer.close();
         }
@@ -275,6 +296,32 @@ public class Main extends javax.swing.JFrame {
             input.setText(helpers.File.read(path));
         }
     }//GEN-LAST:event_loadFileButtonActionPerformed
+
+    private void algorithmVigenere256ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_algorithmVigenere256ActionPerformed
+        // TODO add your handling code here:
+        cipherTextFormatNoSpace.setEnabled(false);
+        cipherTextFormat5Words.setEnabled(false);
+        cipherTextFormatAsItIs.setSelected(true);
+    }//GEN-LAST:event_algorithmVigenere256ActionPerformed
+
+    private void algorithmModifiedVigenereActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_algorithmModifiedVigenereActionPerformed
+        // TODO add your handling code here:
+        cipherTextFormatNoSpace.setEnabled(false);
+        cipherTextFormat5Words.setEnabled(false);
+        cipherTextFormatAsItIs.setSelected(true);
+    }//GEN-LAST:event_algorithmModifiedVigenereActionPerformed
+
+    private void algorithmVigenere26ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_algorithmVigenere26ActionPerformed
+        // TODO add your handling code here:
+        cipherTextFormatNoSpace.setEnabled(true);
+        cipherTextFormat5Words.setEnabled(true);
+    }//GEN-LAST:event_algorithmVigenere26ActionPerformed
+
+    private void PlayfairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayfairActionPerformed
+        // TODO add your handling code here:
+        cipherTextFormatNoSpace.setEnabled(true);
+        cipherTextFormat5Words.setEnabled(true);
+    }//GEN-LAST:event_PlayfairActionPerformed
 
     /**
      * @param args the command line arguments
@@ -326,6 +373,7 @@ public class Main extends javax.swing.JFrame {
             case "Playfair":
                 break;
         }
+        System.out.println(encryptedText);
         return encryptedText;
     }
     
@@ -373,10 +421,10 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.ButtonGroup algorithmOptions;
     private javax.swing.JRadioButton algorithmVigenere256;
     private javax.swing.JRadioButton algorithmVigenere26;
-    private javax.swing.JRadioButton chipperTextFormat5Words;
-    private javax.swing.JRadioButton chipperTextFormatAsItIs;
-    private javax.swing.JRadioButton chipperTextFormatNoSpace;
-    private javax.swing.ButtonGroup chipperTextFormatOptions;
+    private javax.swing.JRadioButton cipherTextFormat5Words;
+    private javax.swing.JRadioButton cipherTextFormatAsItIs;
+    private javax.swing.JRadioButton cipherTextFormatNoSpace;
+    private javax.swing.ButtonGroup cipherTextFormatOptions;
     private javax.swing.JButton decryptButton;
     private javax.swing.JButton encryptButton;
     private javax.swing.JTextArea input;
