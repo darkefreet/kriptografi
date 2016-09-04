@@ -106,6 +106,7 @@ public class Main extends javax.swing.JFrame {
         });
 
         algorithmOptions.add(algorithmVigenere26);
+        algorithmVigenere26.setSelected(true);
         algorithmVigenere26.setText("Vigenere 26");
         algorithmVigenere26.setToolTipText("");
         algorithmVigenere26.addActionListener(new java.awt.event.ActionListener() {
@@ -272,7 +273,6 @@ public class Main extends javax.swing.JFrame {
             } catch (UnsupportedEncodingException ex) {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
-            resultText.replaceAll(null, "\r\n");
             writer.println(resultText);
             writer.close();
         }
@@ -371,28 +371,31 @@ public class Main extends javax.swing.JFrame {
                 encryptedText = VigenereModification.encrypt(text, key);
                 break;
             case "Playfair":
+                Playfair pf = new Playfair();
+                encryptedText = pf.encrypt(text, key);               
                 break;
         }
-        System.out.println(encryptedText);
         return encryptedText;
     }
-    
+
     private String decryptText (String type, String text, String key) {
-        String decrptedText = "";
+        String decryptedText = "";
         switch(type) {
             case "Vigenere 26":
-                decrptedText = Vigenere26.decrypt(text, key);
+                decryptedText = Vigenere26.decrypt(text, key);
                 break;
             case "Vigenere 256":
-                decrptedText = Vigenere256.decrypt(text, key);
+                decryptedText = Vigenere256.decrypt(text, key);
                 break;
             case "Modified Vigenere":
-                decrptedText = VigenereModification.decrypt(text, key);
+                decryptedText = VigenereModification.decrypt(text, key);
                 break;
             case "Playfair":
+                Playfair pf = new Playfair();
+                decryptedText = pf.decrypt(text, key);
                 break;
         }
-        return decrptedText;
+        return decryptedText;
     }
     
     private String formatText (String text, String type) {

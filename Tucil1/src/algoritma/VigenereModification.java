@@ -11,12 +11,16 @@ package algoritma;
  */
 public class VigenereModification {
     
+    /* In vigenere, if the key is not as length as the text, it will be repeated
+     * In this modification, the key is not only repeated, but each character is incremented
+     * Makes it more difficult to perform cryptanalysis
+     */
+    
     private static String shiftKey(String key) {
         String newKey = "";
         for (int i = 0; i < key.length(); i++) {
             newKey += (char)((key.charAt(i) + 1) % 255);
         }
-        System.out.println("KEY: " + newKey);
         return newKey;
     }
     
@@ -24,16 +28,17 @@ public class VigenereModification {
         String result = "";
         for (int i = 0; i < text.length(); i++) {
             if (helpers.Character.isAsciiCharacter(text.charAt(i))) {
-                System.out.println("char: " + text.charAt(i));
                 int asciiCode = (int)text.charAt(i) + (int)(key.charAt(i % key.length()));
-                result += (char)(asciiCode % 255);
-                if (asciiCode % 255 == 13) {
-                    System.out.println("13------------------------------");
+                asciiCode %= 255;
+
+                // Handle LF and CR
+                if (asciiCode == 10) {
+                    asciiCode = 256;
+                } else if (asciiCode == 13) {
+                    asciiCode = 257;
                 }
-                System.out.println((asciiCode % 255) + ":" + (char)(asciiCode % 255));
-            } else {
-                System.out.println("Non-ASCII");
-                result += text.charAt(i);
+
+                result += (char)asciiCode;
             }
             if ((i % key.length()) == key.length() - 1) {
                 key = shiftKey(key);
@@ -45,8 +50,17 @@ public class VigenereModification {
     public static String decrypt(String text, String key) {
         String result = "";
         for (int i = 0; i < text.length(); i++) {
-            if (helpers.Character.isAsciiCharacter(text.charAt(i))) {
-                int asciiCode = (int)text.charAt(i) - (int)(key.charAt(i % key.length())) + 255;
+            int charAsciiCode = (int)text.charAt(i);
+            if (charAsciiCode >=0 && charAsciiCode <= 257) {
+
+                // Handle LF and CR
+                if (charAsciiCode == 256) {
+                   charAsciiCode = 10;
+                } else if (charAsciiCode == 257) {
+                   charAsciiCode = 13;
+                }
+                
+                int asciiCode = charAsciiCode - (int)(key.charAt(i % key.length())) + 255;
                 result += (char)(asciiCode % 255);
             } else {
                 result += text.charAt(i);

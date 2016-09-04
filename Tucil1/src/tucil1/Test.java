@@ -14,5 +14,6 @@ public class Test {
         System.out.println("10: " + (char)10);
         System.out.println("13: " + (char)13);
         System.out.println("14: " + (char)14);
+        System.out.println("256: " + (char)256);
     }
 }
