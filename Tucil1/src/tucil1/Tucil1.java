@@ -18,7 +18,7 @@ public class Tucil1 {
     public static void main(String[] args) {
         
         Vigenere26 vig = new Vigenere26();
-        System.out.println(vig.decrypt("hkfzn heafg iakdl larnc i", "akulahsangkakala"));
+        System.out.println(vig.decrypt("gahazieay", "gila"));
         
         Playfair pf = new Playfair();
         System.out.println(pf.decrypt("yafnf  . ? // bzuflv rflb nvnagbdh ;;  nhn", "dbcgvazzkbkn"));

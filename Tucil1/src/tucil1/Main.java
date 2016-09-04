@@ -324,6 +324,7 @@ public class Main extends javax.swing.JFrame {
                 encryptedText = VigenereModification.encrypt(text, key);
                 break;
             case "Playfair":
+                
                 break;
         }
         return encryptedText;
