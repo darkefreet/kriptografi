@@ -12,7 +12,8 @@ package algoritma;
 public class VigenereModification {
     
     /* In vigenere, if the key is not as length as the text, it will be repeated
-     * In this modification, the key is not only repeated, but each character is incremented
+     * In this modification, the key is not only repeated,
+     * but each character in the key is also incremented
      * Makes it more difficult to perform cryptanalysis
      */
     
@@ -40,6 +41,8 @@ public class VigenereModification {
 
                 result += (char)asciiCode;
             }
+
+            // Increment key
             if ((i % key.length()) == key.length() - 1) {
                 key = shiftKey(key);
             }
@@ -65,6 +68,8 @@ public class VigenereModification {
             } else {
                 result += text.charAt(i);
             }
+
+            // Increment key
             if ((i % key.length()) == key.length() - 1) {
                 key = shiftKey(key);
             }
