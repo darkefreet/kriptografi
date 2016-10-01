@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package coba;
+package tubes;
 
 import java.awt.image.BufferedImage;
 
@@ -13,9 +13,9 @@ import java.awt.image.BufferedImage;
  */
 public class RGBColor {
     
-    private int [][] redPixels;
-    private int [][] greenPixels;
-    private int [][] bluePixels;
+    private int[][] redPixels;
+    private int[][] greenPixels;
+    private int[][] bluePixels;
     
     public RGBColor (BufferedImage img) {
         int w = img.getWidth();
@@ -37,15 +37,15 @@ public class RGBColor {
         }
     }
     
-    public int [][] getR () {
+    public int[][] getR () {
         return redPixels;
     }
     
-    public int [][] getG () {
+    public int[][] getG () {
         return greenPixels;
     }
     
-    public int [][] getB () {
+    public int[][] getB () {
         return bluePixels;
     }
     
