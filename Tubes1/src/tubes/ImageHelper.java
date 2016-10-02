@@ -57,6 +57,64 @@ public class ImageHelper {
         return lsbImage;
     }
     
+    public static BufferedImage decryptWatermark(BufferedImage img,String key) {
+        BufferedImage lsbImage = deepImageClone(img);
+
+        RGBColor rgbColor = new RGBColor(lsbImage);
+        int[][] redPixels = decryptLSB(rgbColor.getR(),key);
+        int[][] greenPixels = decryptLSB(rgbColor.getG(),key);
+        int[][] bluePixels = decryptLSB(rgbColor.getB(),key);
+
+        setPixels(lsbImage, redPixels, greenPixels, bluePixels);
+        return lsbImage;
+    }
+    
+    private static int[][] decryptLSB(int [][] pixels, String key) {
+        String cipherteks = "";
+        boolean first = true;
+        int count = 0;
+        int temp[] = new int[8];
+        for (int row = 0; row < pixels.length; row++) {
+            for (int col = 0; col < pixels[row].length; col++) {
+                int lsb = (pixels[row][col] & 0x01);
+                temp[count] = lsb;
+                count++;
+                if(count==8){
+                    String info = "";
+                    for(int value : temp){
+                        info +='0'+(value-48);
+                    }
+                    cipherteks+= (char)Integer.parseInt(info,2);
+                    count = 0;
+                }
+            }
+        }
+        Vigenere256 vig = new Vigenere256();
+        String plainteks = vig.decrypt(cipherteks,key);
+        String bits="";
+        for (int i = 0; i < plainteks.length(); i++) {
+            bits+=String.format("%8s", Integer.toBinaryString(plainteks.charAt(i))).replace(' ', '0');
+        }
+        while(count<=7){
+            bits+='0'+(temp[count]-48);
+            count++;
+        }
+        int init = 0;
+        for (int row = 0; row < pixels.length; row++) {
+            for (int col = 0; col < pixels[row].length; col++) {
+                if(bits.charAt(init)=='0'){
+                    pixels[row][col] = 255;
+                }
+                else{
+                    pixels[row][col] = 0;
+                }
+                init++;
+            }
+        }
+        
+        return pixels;
+    }
+    
     public static BufferedImage loadImage(String path) throws IOException {
         BufferedImage img = null;
         try {
@@ -77,7 +135,6 @@ public class ImageHelper {
         int count = 0;
         int temp[] = new int[8];
         Vigenere256 vig = new Vigenere256();
-        boolean first = true;
         int init = 0;
         for (int row = 0; row < pixels.length; row++) {
             for (int col = 0; col < pixels[row].length; col++) {
@@ -96,10 +153,7 @@ public class ImageHelper {
                 init++;
             }
         }
-//        System.out.println("i-1 = "+init);
-//        System.out.println("panjang plainteks = "+plainteks.length());
         String cipherteks = vig.encrypt(plainteks,key);
-//        System.out.println("panjang cipherteks = "+cipherteks.length());
         String bits = "";
         for (int i = 0; i < cipherteks.length(); i++) {
             bits+=String.format("%8s", Integer.toBinaryString(cipherteks.charAt(i))).replace(' ', '0');
@@ -111,14 +165,10 @@ public class ImageHelper {
         init = 0;
         for (int row = 0; row < pixels.length; row++) {
             for (int col = 0; col < pixels[row].length; col++) {
-                int replacementRow = row % replacement.length;
-                int replacementCol = col % replacement[replacementRow].length;
                 pixels[row][col] = (pixels[row][col] & 0xfe) | (((int)bits.charAt(init)) & 0x01);
                 init++;
             }
         }
-//        System.out.println("i-2 = "+init);
-//        System.out.println("length = "+bits.length());
     }
     
     public static void setPixels(BufferedImage img, int [][] newRedPixels, int [][] newGreenPixels, int [][] newBluePixels) {

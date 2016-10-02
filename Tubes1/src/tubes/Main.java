@@ -23,7 +23,7 @@ public class Main {
     public static void main(String[] args) throws IOException {        
         // TODO code application logic here
         BufferedImage img = ImageHelper.loadImage("Lenna.png"); // original
-        BufferedImage img2 = ImageHelper.loadImage("watermark.bmp"); // watermark
+        BufferedImage img2 = ImageHelper.loadImage("fblogo.png"); // watermark
         String key = "busiri";
         // The following is used to check pixelBits
         System.out.println(img.getColorModel());
@@ -40,6 +40,12 @@ public class Main {
         
         // Save extracted watermark
         ImageHelper.saveImage(extractedWatermark, "png", "extracted-watermark.png");
+        
+        //Decrypt watermark
+        BufferedImage realWatermark = ImageHelper.decryptWatermark(savedWatermarkedImage,key);
+        
+        //Save decrypted watermark
+        ImageHelper.saveImage(realWatermark, "png", "decrypted-watermark.png");
         
     }
     
