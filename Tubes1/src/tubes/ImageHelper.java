@@ -11,9 +11,9 @@ import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import algorithms.Vigenere256;
+import java.util.ArrayList;
 
 /**
  *
@@ -21,7 +21,7 @@ import javax.imageio.ImageIO;
  */
 public class ImageHelper {
     
-    public static BufferedImage addWatermark(BufferedImage original, BufferedImage watermark) {
+    public static BufferedImage addWatermark(BufferedImage original, BufferedImage watermark, String key) {
         RGBColor rgbColorOrignal = new RGBColor(original);
         int[][] redPixelsOriginal = rgbColorOrignal.getR();
         int[][] greenPixelsOriginal = rgbColorOrignal.getG();
@@ -36,9 +36,9 @@ public class ImageHelper {
         int[][] newGreenPixels = int2DArrayClone(greenPixelsOriginal);
         int[][] newBluePixels = int2DArrayClone(bluePixelsOriginal);
         
-        replaceLSB(newRedPixels, redPixelsReplacement);
-        replaceLSB(newGreenPixels, greenPixelsReplacement);
-        replaceLSB(newBluePixels, bluePixelsReplacement);
+        replaceLSB(newRedPixels, redPixelsReplacement,key);
+        replaceLSB(newGreenPixels, greenPixelsReplacement,key);
+        replaceLSB(newBluePixels, bluePixelsReplacement,key);
         
         BufferedImage watermarkedImage = deepImageClone(original);
         setPixels(watermarkedImage, newRedPixels, newGreenPixels, newBluePixels);
@@ -71,15 +71,54 @@ public class ImageHelper {
         File outputfile = new File(path);
         ImageIO.write(img, fileType, outputfile);
     }
-    
-    private static void replaceLSB(int[][] pixels, int[][] replacement) {
+ 
+    private static void replaceLSB(int[][] pixels, int[][] replacement, String key) {
+        String plainteks = "";
+        int count = 0;
+        int temp[] = new int[8];
+        Vigenere256 vig = new Vigenere256();
+        boolean first = true;
+        int init = 0;
         for (int row = 0; row < pixels.length; row++) {
             for (int col = 0; col < pixels[row].length; col++) {
                 int replacementRow = row % replacement.length;
                 int replacementCol = col % replacement[replacementRow].length;
-                pixels[row][col] = (pixels[row][col] & 0xfe) | ((replacement[replacementRow][replacementCol] >> 7) & 0x01);
+                temp[count] = ((replacement[replacementRow][replacementCol] >> 7) & 0x01);
+                count++;
+                if(count==8){
+                    String info = "";
+                    for(int value : temp){
+                        info +='0'+(value-48);
+                    }
+                    plainteks+= (char)Integer.parseInt(info,2);
+                    count = 0;
+                }
+                init++;
             }
         }
+//        System.out.println("i-1 = "+init);
+//        System.out.println("panjang plainteks = "+plainteks.length());
+        String cipherteks = vig.encrypt(plainteks,key);
+//        System.out.println("panjang cipherteks = "+cipherteks.length());
+        String bits = "";
+        for (int i = 0; i < cipherteks.length(); i++) {
+            bits+=String.format("%8s", Integer.toBinaryString(cipherteks.charAt(i))).replace(' ', '0');
+        }
+        while(count<=7){
+            bits+='0'+(temp[count]-48);
+            count++;
+        }
+        init = 0;
+        for (int row = 0; row < pixels.length; row++) {
+            for (int col = 0; col < pixels[row].length; col++) {
+                int replacementRow = row % replacement.length;
+                int replacementCol = col % replacement[replacementRow].length;
+                pixels[row][col] = (pixels[row][col] & 0xfe) | (((int)bits.charAt(init)) & 0x01);
+                init++;
+            }
+        }
+//        System.out.println("i-2 = "+init);
+//        System.out.println("length = "+bits.length());
     }
     
     public static void setPixels(BufferedImage img, int [][] newRedPixels, int [][] newGreenPixels, int [][] newBluePixels) {

@@ -22,14 +22,14 @@ public class Main {
      */
     public static void main(String[] args) throws IOException {        
         // TODO code application logic here
-        BufferedImage img = ImageHelper.loadImage("n86.jpg"); // original
-        BufferedImage img2 = ImageHelper.loadImage("fblogo.png"); // watermark
-        
+        BufferedImage img = ImageHelper.loadImage("Lenna.png"); // original
+        BufferedImage img2 = ImageHelper.loadImage("watermark.bmp"); // watermark
+        String key = "busiri";
         // The following is used to check pixelBits
         System.out.println(img.getColorModel());
         
         // Add watermark
-        BufferedImage watermarkedImage = ImageHelper.addWatermark(img, img2);
+        BufferedImage watermarkedImage = ImageHelper.addWatermark(img, img2,key);
         
         // Save watermarked image
         ImageHelper.saveImage(watermarkedImage, "png", "watermarked-image.png");
