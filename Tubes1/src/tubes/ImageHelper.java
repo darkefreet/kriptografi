@@ -71,7 +71,6 @@ public class ImageHelper {
     
     private static int[][] decryptLSB(int [][] pixels, String key) {
         String cipherteks = "";
-        boolean first = true;
         int count = 0;
         int temp[] = new int[8];
         for (int row = 0; row < pixels.length; row++) {
@@ -90,7 +89,9 @@ public class ImageHelper {
             }
         }
         Vigenere256 vig = new Vigenere256();
+        System.out.println(key);
         String plainteks = vig.decrypt(cipherteks,key);
+        System.out.println(plainteks);
         String bits="";
         for (int i = 0; i < plainteks.length(); i++) {
             bits+=String.format("%8s", Integer.toBinaryString(plainteks.charAt(i))).replace(' ', '0');
@@ -102,11 +103,11 @@ public class ImageHelper {
         int init = 0;
         for (int row = 0; row < pixels.length; row++) {
             for (int col = 0; col < pixels[row].length; col++) {
-                if(bits.charAt(init)=='0'){
-                    pixels[row][col] = 255;
+                if(bits.charAt(init)=='1'){
+                    pixels[row][col] = 0;
                 }
                 else{
-                    pixels[row][col] = 0;
+                    pixels[row][col] = 255;
                 }
                 init++;
             }
@@ -154,6 +155,7 @@ public class ImageHelper {
             }
         }
         String cipherteks = vig.encrypt(plainteks,key);
+        System.out.println(plainteks);
         String bits = "";
         for (int i = 0; i < cipherteks.length(); i++) {
             bits+=String.format("%8s", Integer.toBinaryString(cipherteks.charAt(i))).replace(' ', '0');
