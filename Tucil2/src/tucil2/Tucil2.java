@@ -38,7 +38,7 @@ public class Tucil2 {
             int asciiCode2 = (int)text.charAt(i + 1);
             if ((asciiCode1 >= 97) && (asciiCode1 <= 122) && (asciiCode2 >= 97) && (asciiCode2 <= 122)) {
                 String key = String.valueOf((char)asciiCode1) + String.valueOf((char)asciiCode2);
-                System.out.println(key);
+//                System.out.println(key);
                 if (counter.containsKey(key)) {
                     counter.put(key, counter.get(key) + 1);
                 } else {
@@ -85,7 +85,8 @@ public class Tucil2 {
         for (int i = 97; i <= 122; i++) {
             counterSingleAlphabet.put(i, 0);
         }
-        String cipherText = helpers.File.read("C:\\\\Users\\ivanandrianto\\Documents\\cipher1.txt");
+//        String cipherText = helpers.File.read("C:\\\\Users\\ivanandrianto\\Documents\\cipher1.txt");
+        String cipherText = helpers.File.read("C:\\\\Users\\Hp\\Desktop\\ciphertext.txt").toLowerCase();
         singleAlphabetAnalysis(cipherText, counterSingleAlphabet);
         doubleAlphabetAnalysis(cipherText, counterDoubleAlphabet);
         tripleAlphabetAnalysis(cipherText, counterTripleAlphabet);

@@ -146,11 +146,11 @@ public class Playfair {
     private String encryptDigraf(char a,char b){
         String res ="";
         if(charPosition[a-'a'].getX()==charPosition[b-'a'].getX()){
-            res+=playFairKey[(charPosition[a-'a'].getX()+1)%5][charPosition[a-'a'].getY()];               
-            res+=playFairKey[(charPosition[b-'a'].getX()+1)%5][charPosition[b-'a'].getY()];
-        }else if(charPosition[a-'a'].getY()==charPosition[b-'a'].getY()){
             res+=playFairKey[charPosition[a-'a'].getX()][(charPosition[a-'a'].getY()+1)%5];               
             res+=playFairKey[charPosition[b-'a'].getX()][(charPosition[b-'a'].getY()+1)%5];
+        }else if(charPosition[a-'a'].getY()==charPosition[b-'a'].getY()){
+            res+=playFairKey[(charPosition[a-'a'].getX()+1)%5][charPosition[a-'a'].getY()];               
+            res+=playFairKey[(charPosition[b-'a'].getX()+1)%5][charPosition[b-'a'].getY()];
         }else{
             res+=playFairKey[charPosition[a-'a'].getX()][charPosition[b-'a'].getY()];               
             res+=playFairKey[charPosition[b-'a'].getX()][charPosition[a-'a'].getY()];
@@ -161,15 +161,15 @@ public class Playfair {
     private String decryptDigraf(char a, char b){
         String res = "";
         if(charPosition[a-'a'].getX()==charPosition[b-'a'].getX()){
-            int x = (charPosition[a-'a'].getX()-1)%5;if(x < 0){x = 5+x;}
-            int y = (charPosition[b-'a'].getX()-1)%5;if(y < 0){y = 5+y;}
-            res+=playFairKey[x][charPosition[a-'a'].getY()];               
-            res+=playFairKey[y][charPosition[b-'a'].getY()];
-        }else if(charPosition[a-'a'].getY()==charPosition[b-'a'].getY()){
             int x = (charPosition[a-'a'].getY()-1)%5;if(x < 0){x = 5+x;}
             int y = (charPosition[b-'a'].getY()-1)%5;if(y < 0){y = 5+y;}
             res+=playFairKey[charPosition[a-'a'].getX()][x];               
             res+=playFairKey[charPosition[b-'a'].getX()][y];
+        }else if(charPosition[a-'a'].getY()==charPosition[b-'a'].getY()){
+            int x = (charPosition[a-'a'].getX()-1)%5;if(x < 0){x = 5+x;}
+            int y = (charPosition[b-'a'].getX()-1)%5;if(y < 0){y = 5+y;}
+            res+=playFairKey[x][charPosition[a-'a'].getY()];               
+            res+=playFairKey[y][charPosition[b-'a'].getY()];
         }else{
             res+=playFairKey[charPosition[a-'a'].getX()][charPosition[b-'a'].getY()];               
             res+=playFairKey[charPosition[b-'a'].getX()][charPosition[a-'a'].getY()];
