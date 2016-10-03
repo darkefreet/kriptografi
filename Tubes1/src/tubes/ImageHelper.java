@@ -89,9 +89,7 @@ public class ImageHelper {
             }
         }
         Vigenere256 vig = new Vigenere256();
-        System.out.println(key);
         String plainteks = vig.decrypt(cipherteks,key);
-        System.out.println(plainteks);
         String bits="";
         for (int i = 0; i < plainteks.length(); i++) {
             bits+=String.format("%8s", Integer.toBinaryString(plainteks.charAt(i))).replace(' ', '0');
@@ -104,10 +102,10 @@ public class ImageHelper {
         for (int row = 0; row < pixels.length; row++) {
             for (int col = 0; col < pixels[row].length; col++) {
                 if(bits.charAt(init)=='1'){
-                    pixels[row][col] = 0;
+                    pixels[row][col] = 255;
                 }
                 else{
-                    pixels[row][col] = 255;
+                    pixels[row][col] = 0;
                 }
                 init++;
             }
@@ -154,11 +152,16 @@ public class ImageHelper {
                 init++;
             }
         }
+        System.out.println("init-1 : "+init);
         String cipherteks = vig.encrypt(plainteks,key);
-        System.out.println(plainteks);
+//        System.out.println(plainteks);
+//        System.out.println(vig.decrypt(cipherteks,key));
         String bits = "";
         for (int i = 0; i < cipherteks.length(); i++) {
-            bits+=String.format("%8s", Integer.toBinaryString(cipherteks.charAt(i))).replace(' ', '0');
+            String c = Integer.toBinaryString(cipherteks.charAt(i));
+            String padding ="0000000000000";
+            String cipher = padding + c;
+            bits+=cipher.substring(cipher.length()-8);
         }
         while(count<=7){
             bits+='0'+(temp[count]-48);
@@ -171,6 +174,8 @@ public class ImageHelper {
                 init++;
             }
         }
+        System.out.println("panjang bits : "+bits.length());
+        System.out.println("banyak pemasukkan : "+init);
     }
     
     public static void setPixels(BufferedImage img, int [][] newRedPixels, int [][] newGreenPixels, int [][] newBluePixels) {

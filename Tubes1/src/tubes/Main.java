@@ -23,8 +23,8 @@ public class Main {
     public static void main(String[] args) throws IOException {        
         // TODO code application logic here
         BufferedImage img = ImageHelper.loadImage("Lenna.png"); // original
-        BufferedImage img2 = ImageHelper.loadImage("fblogo.png"); // watermark
-        String key = "busiri";
+        BufferedImage img2 = ImageHelper.loadImage("n86.jpg"); // watermark
+        String key = "i";
         // The following is used to check pixelBits
         System.out.println(img.getColorModel());
         
