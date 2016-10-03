@@ -16,7 +16,7 @@ public class Vigenere256 {
         for (int i = 0; i < text.length(); i++) {
             if (helpers.Character.isAsciiCharacter(text.charAt(i))) {
                 int asciiCode = (int)text.charAt(i) + (int)(key.charAt(i % key.length()));
-                asciiCode %= 255;
+                asciiCode %= 256;
 
                 // Handle LF and CR
                 if (asciiCode == 10) {
@@ -44,8 +44,8 @@ public class Vigenere256 {
                    charAsciiCode = 13;
                 }
 
-                int asciiCode = charAsciiCode - (int)(key.charAt(i % key.length())) + 255;
-                result += (char)(asciiCode % 255);
+                int asciiCode = charAsciiCode - (int)(key.charAt(i % key.length())) + 256;
+                result += (char)(asciiCode % 256);
             } else {
                 result += text.charAt(i);
             }
