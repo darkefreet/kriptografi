@@ -32,6 +32,7 @@ public class RGBColor {
               redPixels[row][col] = ((RGBarray[x] >> 16) & 0xff);
               greenPixels[row][col] = ((RGBarray[x] >> 8) & 0xff);
               bluePixels[row][col] = (RGBarray[x] & 0xff);
+              //System.out.println(redPixels[row][col] + " " + greenPixels[row][col] + " " + bluePixels[row][col]);
               x++;
             }
         }
