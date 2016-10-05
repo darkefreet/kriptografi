@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import javax.imageio.ImageIO;
 import algorithms.Vigenere256;
-import java.util.ArrayList;
 
 /**
  *
@@ -36,12 +35,20 @@ public class ImageHelper {
         int[][] newGreenPixels = int2DArrayClone(greenPixelsOriginal);
         int[][] newBluePixels = int2DArrayClone(bluePixelsOriginal);
         
+        
         replaceLSB(newRedPixels, redPixelsReplacement,key);
         replaceLSB(newGreenPixels, greenPixelsReplacement,key);
         replaceLSB(newBluePixels, bluePixelsReplacement,key);
         
+        Double total = 0.0;
         BufferedImage watermarkedImage = deepImageClone(original);
-        setPixels(watermarkedImage, newRedPixels, newGreenPixels, newBluePixels);
+        total = setPixels(watermarkedImage, newRedPixels, newGreenPixels, newBluePixels);
+        double rms = Math.sqrt(total/newRedPixels.length/newRedPixels[0].length);
+        //Tidak menggunakan 256 karena nilai maksimum dari 24 bit adalah 16777216, bukan 256
+        double PSNR = 20*Math.log(16777216/rms)/Math.log(10);
+//        System.out.println("total : "+total);
+//        System.out.println("rms : "+rms);
+        System.out.println("PSNR : "+PSNR);
         return watermarkedImage;
     }
     
@@ -152,7 +159,7 @@ public class ImageHelper {
                 init++;
             }
         }
-        System.out.println("init-1 : "+init);
+//        System.out.println("init-1 : "+init);
         String cipherteks = vig.encrypt(plainteks,key);
 //        System.out.println(plainteks);
 //        System.out.println(vig.decrypt(cipherteks,key));
@@ -174,17 +181,21 @@ public class ImageHelper {
                 init++;
             }
         }
-        System.out.println("panjang bits : "+bits.length());
-        System.out.println("banyak pemasukkan : "+init);
+//        System.out.println("panjang bits : "+bits.length());
+//        System.out.println("banyak pemasukkan : "+init);
     }
     
-    public static void setPixels(BufferedImage img, int [][] newRedPixels, int [][] newGreenPixels, int [][] newBluePixels) {
+    public static double setPixels(BufferedImage img, int [][] newRedPixels, int [][] newGreenPixels, int [][] newBluePixels) {
+        double total = 0;
         for (int row = 0; row < img.getHeight(); row++) {
             for (int col = 0; col < img.getWidth(); col++) {
+                int oldColor = img.getRGB(col,row);
                 int color = (newRedPixels[row][col] << 16) | (newGreenPixels[row][col] << 8) | (newBluePixels[row][col]); 
                 img.setRGB(col, row, color);
+                total+=Math.pow(oldColor-color,2);
             }
         }
+        return total;
     }
     
     private static int[][] getLSB(int [][] pixels) {
