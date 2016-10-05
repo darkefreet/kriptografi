@@ -104,13 +104,18 @@ public class ImageHelper {
         int init = 0;
         for (int row = 0; row < pixels.length; row++) {
             for (int col = 0; col < pixels[row].length; col++) {
+                System.out.println(init);
                 if(bits.charAt(init)=='1'){
                     pixels[row][col] = 255;
                 }
                 else{
                     pixels[row][col] = 0;
                 }
-                init++;
+                if(init == bits.length() - 1) {
+                   break; 
+                } else {
+                    init++;
+                }
             }
         }
         
