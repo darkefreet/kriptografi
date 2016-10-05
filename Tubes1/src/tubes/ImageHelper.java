@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import javax.imageio.ImageIO;
 import algorithms.Vigenere256;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import net.sf.image4j.util.ConvertUtil;
 
 /**
@@ -220,7 +222,7 @@ public class ImageHelper {
         return pixels;
     }
     
-    static BufferedImage deepImageClone(BufferedImage bi) {
+    public static BufferedImage deepImageClone(BufferedImage bi) {
         ColorModel cm = bi.getColorModel();
         boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
         WritableRaster raster = bi.copyData(null);
@@ -239,6 +241,38 @@ public class ImageHelper {
             // System.arraycopy(original[i], 0, result[i], 0, original[i].length);
         }
         return result;
+    }
+    
+    public static BufferedImage getScaledImage(BufferedImage srcImg, int maxWidth, int maxHeight){
+        
+        double w = (double)srcImg.getWidth();
+        double h = (double)srcImg.getHeight();
+        
+        double ratio = 1;
+        if (w > maxWidth || h > maxHeight) {
+            double excessiveWidthRatio = 1 / (w / (double)maxWidth);
+            double excessiveHeightRatio = 1 / (h / (double)maxHeight);
+            System.out.println(excessiveWidthRatio);
+            System.out.println(excessiveHeightRatio);
+            if (excessiveWidthRatio < excessiveHeightRatio) {
+                ratio = excessiveWidthRatio;
+            } else {
+                ratio = excessiveHeightRatio;
+            }   
+        } 
+        System.out.println(ratio);
+        double newWidth = w * ratio;
+        double newHeight = h * ratio;
+        System.out.println(newWidth);
+        System.out.println(newHeight);
+        BufferedImage resizedImg = new BufferedImage((int)newWidth, (int)newHeight, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = resizedImg.createGraphics();
+
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2.drawImage(srcImg, 0, 0, (int)newWidth, (int)newHeight, null);
+        g2.dispose();
+
+        return resizedImg;
     }
     
 }

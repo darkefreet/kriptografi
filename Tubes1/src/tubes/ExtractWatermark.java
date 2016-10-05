@@ -25,18 +25,18 @@ public class ExtractWatermark {
         String key = "busiri";
         
         // Extract watermark
-        BufferedImage savedWatermarkedImage = ImageHelper.loadImage("watermarked-image-deleted-content.png");
+        BufferedImage savedWatermarkedImage = ImageHelper.loadImage("watermarked-image.png");
         System.out.println(savedWatermarkedImage.getColorModel());
         BufferedImage extractedWatermark = ImageHelper.extractWatermark(savedWatermarkedImage);
         
         // Save extracted watermark
-        ImageHelper.saveImage(extractedWatermark, "png", "extracted-watermark-deleted-content.png");
+        ImageHelper.saveImage(extractedWatermark, "png", "extracted-watermark.png");
         
         //Decrypt watermark
         BufferedImage realWatermark = ImageHelper.decryptWatermark(savedWatermarkedImage,key);
         
         //Save decrypted watermark
-        ImageHelper.saveImage(realWatermark, "png", "decrypted-watermark-deleted-content.png");
+        ImageHelper.saveImage(realWatermark, "png", "decrypted-watermark.png");
         
     }
     
