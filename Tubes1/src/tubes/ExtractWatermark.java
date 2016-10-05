@@ -25,7 +25,8 @@ public class ExtractWatermark {
         String key = "busiri";
         
         // Extract watermark
-        BufferedImage savedWatermarkedImage = ImageHelper.loadImage("watermarked-image.png");
+        BufferedImage savedWatermarkedImage = ImageHelper.loadImage("watermarked-image2.png");
+        System.out.println(savedWatermarkedImage.getColorModel());
         BufferedImage extractedWatermark = ImageHelper.extractWatermark(savedWatermarkedImage);
         
         // Save extracted watermark

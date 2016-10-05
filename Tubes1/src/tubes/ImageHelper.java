@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import javax.imageio.ImageIO;
 import algorithms.Vigenere256;
+import net.sf.image4j.util.ConvertUtil;
 
 /**
  *
@@ -54,6 +55,7 @@ public class ImageHelper {
     
     public static BufferedImage extractWatermark(BufferedImage img) {
         BufferedImage lsbImage = deepImageClone(img);
+        lsbImage = ConvertUtil.convert24(lsbImage);
 
         RGBColor rgbColor = new RGBColor(lsbImage);
         int[][] redPixels = getLSB(rgbColor.getR());
@@ -64,14 +66,15 @@ public class ImageHelper {
         return lsbImage;
     }
     
-    public static BufferedImage decryptWatermark(BufferedImage img,String key) {
+    public static BufferedImage decryptWatermark(BufferedImage img,String key) throws IOException {
         BufferedImage lsbImage = deepImageClone(img);
-
+        lsbImage = ConvertUtil.convert24(lsbImage);
+        
         RGBColor rgbColor = new RGBColor(lsbImage);
         int[][] redPixels = decryptLSB(rgbColor.getR(),key);
         int[][] greenPixels = decryptLSB(rgbColor.getG(),key);
         int[][] bluePixels = decryptLSB(rgbColor.getB(),key);
-
+        
         setPixels(lsbImage, redPixels, greenPixels, bluePixels);
         return lsbImage;
     }
