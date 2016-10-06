@@ -49,8 +49,6 @@ public class ImageHelper {
         double rms = Math.sqrt(total/newRedPixels.length/newRedPixels[0].length);
         //Tidak menggunakan 256 karena nilai maksimum dari 24 bit adalah 16777216, bukan 256
         double PSNR = 20*Math.log(16777216/rms)/Math.log(10);
-//        System.out.println("total : "+total);
-//        System.out.println("rms : "+rms);
         System.out.println("PSNR : "+PSNR);
         return watermarkedImage;
     }
@@ -113,7 +111,6 @@ public class ImageHelper {
         int init = 0;
         for (int row = 0; row < pixels.length; row++) {
             for (int col = 0; col < pixels[row].length; col++) {
-                System.out.println(init);
                 if(bits.charAt(init)=='1'){
                     pixels[row][col] = 255;
                 }
@@ -169,10 +166,7 @@ public class ImageHelper {
                 init++;
             }
         }
-//        System.out.println("init-1 : "+init);
         String cipherteks = vig.encrypt(plainteks,key);
-//        System.out.println(plainteks);
-//        System.out.println(vig.decrypt(cipherteks,key));
         String bits = "";
         for (int i = 0; i < cipherteks.length(); i++) {
             String c = Integer.toBinaryString(cipherteks.charAt(i));
@@ -191,8 +185,6 @@ public class ImageHelper {
                 init++;
             }
         }
-//        System.out.println("panjang bits : "+bits.length());
-//        System.out.println("banyak pemasukkan : "+init);
     }
     
     public static double setPixels(BufferedImage img, int [][] newRedPixels, int [][] newGreenPixels, int [][] newBluePixels) {
@@ -252,19 +244,14 @@ public class ImageHelper {
         if (w > maxWidth || h > maxHeight) {
             double excessiveWidthRatio = 1 / (w / (double)maxWidth);
             double excessiveHeightRatio = 1 / (h / (double)maxHeight);
-            System.out.println(excessiveWidthRatio);
-            System.out.println(excessiveHeightRatio);
             if (excessiveWidthRatio < excessiveHeightRatio) {
                 ratio = excessiveWidthRatio;
             } else {
                 ratio = excessiveHeightRatio;
             }   
         } 
-        System.out.println(ratio);
         double newWidth = w * ratio;
         double newHeight = h * ratio;
-        System.out.println(newWidth);
-        System.out.println(newHeight);
         BufferedImage resizedImg = new BufferedImage((int)newWidth, (int)newHeight, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = resizedImg.createGraphics();
 

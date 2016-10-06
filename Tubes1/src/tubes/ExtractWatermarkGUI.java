@@ -37,6 +37,9 @@ public class ExtractWatermarkGUI {
     static JPanel watermarkedImagePanel;
     static JPanel watermarkImagePanel;
     static JTextField keyField;
+    static JTextField outputField;
+    static JLabel keyLabel;
+    static JLabel outputLabel;
     static JButton extractWatermarkBtn;
     static BufferedImage watermarkedImage;
     static JButton loadFileBtn;
@@ -55,11 +58,22 @@ public class ExtractWatermarkGUI {
         
         // Key
         keyField = new JTextField();
-        keyField.setBounds(2 * 20 + imgPanelWidth, 20, 150, 20);
+        keyField.setBounds(390, 20, 100, 20);
+        keyLabel = new JLabel();
+        keyLabel.setText("Kunci");
+        keyLabel.setBounds(340, 20, 100, 20);
+        
+        
+        // Output
+        outputField = new JTextField();
+        outputField.setBounds(440, 360, 100, 20);
+        outputLabel = new JLabel();
+        outputLabel.setText("Output");
+        outputLabel.setBounds(340, 360, 100, 20);
         
         // Watermarked Image Panel
         watermarkImagePanel = new JPanel();
-        watermarkImagePanel.setBounds(2 * 20 + imgPanelWidth,50,imgPanelWidth,imgPanelHeight);
+        watermarkImagePanel.setBounds(340, 50, imgPanelWidth,imgPanelHeight);
         watermarkImagePanel.setBackground(Color.white);
         
         // Load Image Button
@@ -74,7 +88,7 @@ public class ExtractWatermarkGUI {
 
         // Load Watermark Image Button
         extractWatermarkBtn = new JButton("Extract Watermark");
-        extractWatermarkBtn.setBounds(3 * 20 + keyWidth + imgPanelWidth, 20, 150, 20);
+        extractWatermarkBtn.setBounds(150 + keyWidth + imgPanelWidth, 20, 150, 20);
         extractWatermarkBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e)
             {
@@ -90,6 +104,9 @@ public class ExtractWatermarkGUI {
         frame.add(loadFileBtn);
         frame.add(extractWatermarkBtn);
         frame.add(keyField);
+        frame.add(keyLabel);
+        frame.add(outputField);
+        frame.add(outputLabel);
         frame.add(watermarkedImagePanel);
         frame.add(watermarkImagePanel);
         frame.setSize(1000, 500);
@@ -118,7 +135,7 @@ public class ExtractWatermarkGUI {
             try {
                 img = ImageHelper.loadImage(path);
             } catch (IOException ex) {
-                Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ExtractWatermarkGUI.class.getName()).log(Level.SEVERE, null, ex);
             }
             BufferedImage cloneImg = ImageHelper.deepImageClone(img);
             cloneImg = ImageHelper.getScaledImage(img, imgPanelWidth, imgPanelHeight);
@@ -131,6 +148,7 @@ public class ExtractWatermarkGUI {
     
     public static void extractWatermark() throws IOException {
         String key = keyField.getText().trim();
+        String outputPath = outputField.getText().trim();
         Thread execute = new Thread() {
             public void run() {
                 // Extract watermark
@@ -138,7 +156,7 @@ public class ExtractWatermarkGUI {
                 
                 try {
                     // Save extracted watermark
-                    ImageHelper.saveImage(extractedWatermark, "png", "extracted-watermark.png");
+                    ImageHelper.saveImage(extractedWatermark, "png", "extracted-watermark-file.png");
                 } catch (IOException ex) {
                     Logger.getLogger(ExtractWatermarkGUI.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -150,6 +168,8 @@ public class ExtractWatermarkGUI {
                     BufferedImage realWatermarkClone = ImageHelper.deepImageClone(realWatermark);
                     realWatermarkClone = ImageHelper.getScaledImage(realWatermarkClone, imgPanelWidth, imgPanelHeight);
 
+                    ImageHelper.saveImage(realWatermark, "png", outputPath);
+                    
                     loadImage(watermarkImagePanel, realWatermarkClone);
                 } catch (IOException ex) {
                     Logger.getLogger(ExtractWatermarkGUI.class.getName()).log(Level.SEVERE, null, ex);
@@ -157,7 +177,7 @@ public class ExtractWatermarkGUI {
             }  
         };
 
-        if ((watermarkedImage != null)&& (key.length() > 0)) {
+        if ((watermarkedImage != null) && (outputPath.length() > 0) && (key.length() > 0)) {
             execute.run();
         }
     }
