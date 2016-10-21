@@ -18,6 +18,10 @@ public class SBox {
     private static final String sBoxFilePath = "sbox.txt";
     private static int[][] table = new int[16][16];
     
+    public SBox() throws IOException {
+        loadFile();
+    }
+    
     private void loadFile() throws FileNotFoundException, IOException {
         BufferedReader br = new BufferedReader(new FileReader(sBoxFilePath));
         String line = null;
@@ -37,16 +41,23 @@ public class SBox {
         } finally {
             br.close();
         }
-
-        for (int x = 0; x < 16; x++) {
-            for (int y = 0; y < 16; y++) {
-                System.out.print(table[x][y] + " ");
-            }
-            System.out.println("");
-        }
     }
     
-    public SBox() throws IOException {
-        loadFile();
+    public String substitute (String str) {
+        String substituted = "";
+        for (int i = 0; i < str.length(); i++) {
+            char c = str.charAt(i);
+            String hex = Integer.toHexString(c);
+            int hexs[] = new int[2];
+            if (hex.length() == 1) {
+                hexs[0] = 0;
+                hexs[1] = Integer.parseInt(hex.substring(0, 1), 16);
+            } else {
+                hexs[0] = Integer.parseInt(hex.substring(0, 1), 16);
+                hexs[1] = Integer.parseInt(hex.substring(1), 16);
+            }
+            substituted += (char)table[hexs[0]][hexs[1]];
+        }
+        return substituted;
     }
 }
