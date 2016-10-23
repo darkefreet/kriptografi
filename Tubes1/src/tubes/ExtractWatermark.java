@@ -22,15 +22,15 @@ public class ExtractWatermark {
      */
     public static void main(String[] args) throws IOException {        
         // TODO code application logic here
-        String key = "busiri";
+        String key = "ivanAndrianto";
         
         // Extract watermark
-        BufferedImage savedWatermarkedImage = ImageHelper.loadImage("watermarked-image.png");
+        BufferedImage savedWatermarkedImage = ImageHelper.loadImage("watermarked-color.png");
         System.out.println(savedWatermarkedImage.getColorModel());
         BufferedImage extractedWatermark = ImageHelper.extractWatermark(savedWatermarkedImage);
         
         // Save extracted watermark
-        ImageHelper.saveImage(extractedWatermark, "png", "extracted-watermark.png");
+        ImageHelper.saveImage(extractedWatermark, "png", "watermark-color.png");
         
         //Decrypt watermark
         BufferedImage realWatermark = ImageHelper.decryptWatermark(savedWatermarkedImage,key);

@@ -20,10 +20,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import static tubes.AddWatermarkGUI.frame;
-import static tubes.AddWatermarkGUI.imgPanelWidth;
-import static tubes.AddWatermarkGUI.keyField;
-import static tubes.AddWatermarkGUI.loadFileBtn;
 
 /**
  *
@@ -37,6 +33,7 @@ public class ExtractWatermarkGUI {
     static JPanel watermarkedImagePanel;
     static JPanel watermarkImagePanel;
     static JTextField keyField;
+    static JTextField sourceField;
     static JButton extractWatermarkBtn;
     static BufferedImage watermarkedImage;
     static JButton loadFileBtn;
@@ -55,7 +52,11 @@ public class ExtractWatermarkGUI {
         
         // Key
         keyField = new JTextField();
-        keyField.setBounds(2 * 20 + imgPanelWidth, 20, 150, 20);
+        keyField.setBounds(2 * 20 + imgPanelWidth, 380, 150, 20);
+        
+        // Location Field
+        sourceField = new JTextField();
+        sourceField.setBounds(2 * 20 + imgPanelWidth, 430, 300, 20);
         
         // Watermarked Image Panel
         watermarkImagePanel = new JPanel();
@@ -90,6 +91,7 @@ public class ExtractWatermarkGUI {
         frame.add(loadFileBtn);
         frame.add(extractWatermarkBtn);
         frame.add(keyField);
+        frame.add(sourceField);
         frame.add(watermarkedImagePanel);
         frame.add(watermarkImagePanel);
         frame.setSize(1000, 500);
@@ -131,6 +133,7 @@ public class ExtractWatermarkGUI {
     
     public static void extractWatermark() throws IOException {
         String key = keyField.getText().trim();
+        String source = sourceField.getText().trim();
         Thread execute = new Thread() {
             public void run() {
                 // Extract watermark

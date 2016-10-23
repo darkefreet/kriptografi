@@ -17,7 +17,6 @@ import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
-import javax.imageio.ImageIO;
  
 public class AddWatermarkGUI {
  

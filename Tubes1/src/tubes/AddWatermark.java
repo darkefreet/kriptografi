@@ -22,7 +22,7 @@ public class AddWatermark {
         String key = "busiri";
         
         BufferedImage img = ImageHelper.loadImage("Lenna.png"); // original
-        BufferedImage img2 = ImageHelper.loadImage("watermark.bmp"); // watermark
+        BufferedImage img2 = ImageHelper.loadImage("n86.jpg"); // watermark
         // The following is used to check pixelBits
         System.out.println(img.getColorModel());
         
@@ -30,7 +30,7 @@ public class AddWatermark {
         BufferedImage watermarkedImage = ImageHelper.addWatermark(img, img2, key);
         
         // Save watermarked image
-        ImageHelper.saveImage(watermarkedImage, "png", "watermarked-image.png");
+        ImageHelper.saveImage(watermarkedImage, "png", "watermarked-color.png");
     }
     
 }
