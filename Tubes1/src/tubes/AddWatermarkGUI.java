@@ -27,6 +27,9 @@ public class AddWatermarkGUI {
     static BufferedImage imgOriginal; // original
     static BufferedImage imgWatermark; // watermark
     static JTextField keyField;
+    static JLabel keyLabel;
+    static JTextField outputField;
+    static JLabel outputLabel;
     static JPanel imagePanel;
     static JPanel watermarkImagePanel;
     static JPanel watermarkedImagePanel;
@@ -43,17 +46,17 @@ public class AddWatermarkGUI {
         
         // Image panel
         imagePanel = new JPanel();
-        imagePanel.setBounds(20,50,imgPanelWidth,imgPanelHeight);
+        imagePanel.setBounds(20, 50, imgPanelWidth, imgPanelHeight);
         imagePanel.setBackground(Color.white);
 
         // Watermarked Image Panel
         watermarkImagePanel = new JPanel();
-        watermarkImagePanel.setBounds(2 * 20 + imgPanelWidth,50,imgPanelWidth,imgPanelHeight);
+        watermarkImagePanel.setBounds(340, 50, imgPanelWidth, imgPanelHeight);
         watermarkImagePanel.setBackground(Color.white);
 
         // Watermarked Image Panel
         watermarkedImagePanel = new JPanel();
-        watermarkedImagePanel.setBounds(3 * 20 + 2 * imgPanelWidth,50,imgPanelWidth,imgPanelHeight);
+        watermarkedImagePanel.setBounds(660, 50, imgPanelWidth, imgPanelHeight);
         watermarkedImagePanel.setBackground(Color.white);
 
         // Load Image Button
@@ -68,21 +71,31 @@ public class AddWatermarkGUI {
 
         // Load Watermark Image Button
         loadWatermarkFileBtn = new JButton("Load Watermark Image");
-        loadWatermarkFileBtn.setBounds(2 * 20 + imgPanelWidth, 20, 150, 20);
+        loadWatermarkFileBtn.setBounds(340, 20, 150, 20);
         loadWatermarkFileBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e)
             {
                 imgWatermark = selectAndLoadImage(watermarkImagePanel);
             }
         });
-        
+
         // Key
         keyField = new JTextField();
-        keyField.setBounds(3 * 20 + 2 * imgPanelWidth, 20, 150, 20);
+        keyField.setBounds(760, 20, 100, 20);
+        keyLabel = new JLabel();
+        keyLabel.setText("Kunci");
+        keyLabel.setBounds(660, 20, 100, 20);
+
+        // Output
+        outputField = new JTextField();
+        outputField.setBounds(760, 360, 150, 20);
+        outputLabel = new JLabel();
+        outputLabel.setText("Output");
+        outputLabel.setBounds(660, 360, 100, 20);
         
         // Load Watermark Image Button
         addWatermarkBtn = new JButton("Add Watermark");
-        addWatermarkBtn.setBounds(4 * 20 + keyWidth + 2 * imgPanelWidth, 20, 150, 20);
+        addWatermarkBtn.setBounds(880, 20, 150, 20);
         addWatermarkBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e)
             {
@@ -98,11 +111,14 @@ public class AddWatermarkGUI {
         frame.add(loadFileBtn);
         frame.add(loadWatermarkFileBtn);
         frame.add(keyField);
+        frame.add(keyLabel);
+        frame.add(outputField);
+        frame.add(outputLabel);
         frame.add(addWatermarkBtn);
         frame.add(imagePanel);
         frame.add(watermarkImagePanel);
         frame.add(watermarkedImagePanel);
-        frame.setSize(1000, 500);
+        frame.setSize(1200, 500);
         frame.setResizable(false);
         frame.setVisible(true);
 
@@ -124,12 +140,11 @@ public class AddWatermarkGUI {
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
             String path = selectedFile.getAbsolutePath();
-            System.out.println(path);
             BufferedImage img = null;
             try {
                 img = ImageHelper.loadImage(path);
             } catch (IOException ex) {
-                Logger.getLogger(MainGUI.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AddWatermarkGUI.class.getName()).log(Level.SEVERE, null, ex);
             }
             BufferedImage cloneImg = ImageHelper.deepImageClone(img);
             cloneImg = ImageHelper.getScaledImage(img, imgPanelWidth, imgPanelHeight);
@@ -142,6 +157,7 @@ public class AddWatermarkGUI {
     
     public static void addWatermark() throws IOException {
         String key = keyField.getText().trim();
+        String outputPath = outputField.getText().trim();
         Thread execute = new Thread() {
             public void run() {        
                 // Add watermark
@@ -149,7 +165,7 @@ public class AddWatermarkGUI {
 
                 try {
                     // Save watermarked image
-                    ImageHelper.saveImage(watermarkedImage, "png", "watermarked-image.png");
+                    ImageHelper.saveImage(watermarkedImage, "png", outputPath);
                 } catch (IOException ex) {
                     Logger.getLogger(AddWatermarkGUI.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -160,7 +176,7 @@ public class AddWatermarkGUI {
             }  
         };
 
-        if ((imgOriginal != null) && (imgWatermark != null) && (key.length() > 0)) {
+        if ((imgOriginal != null) && (imgWatermark != null) && (key.length() > 0) && (outputPath.length() > 0)) {
             execute.run();
         }
     }
