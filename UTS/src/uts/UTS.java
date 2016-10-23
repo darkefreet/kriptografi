@@ -16,8 +16,10 @@ public class UTS {
 
     public static void main (String args[]) throws IOException {
         System.out.println("TriTOLE");
-        Encryptor e = new Encryptor("ab", "12");
+        Encryptor e = new Encryptor("abcdefghijklmnopqrstuvwxyz", "123551123ab");
         System.out.println(e.encrypt());
+        Decryptor d = new Decryptor(e.cipherText,"123551123ab");
+        System.out.println(d.decrypt());
     }
 
 }

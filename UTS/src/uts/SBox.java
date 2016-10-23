@@ -45,6 +45,7 @@ public class SBox {
     
     public String substitute (String str) {
         String substituted = "";
+//        System.out.println(str);
         for (int i = 0; i < str.length(); i++) {
             char c = str.charAt(i);
             String hex = Integer.toHexString(c);
@@ -58,6 +59,37 @@ public class SBox {
             }
             substituted += (char)table[hexs[0]][hexs[1]];
         }
+//        System.out.println("subs = " + substituted);
+        return substituted;
+    }
+    
+    public String findSub(String str){
+        String substituted = "";
+//        System.out.println(str);
+        for (int i = 0; i < str.length(); i++){
+            char c = str.charAt(i);
+            int hex = (int) c;
+            
+            int foundi = 0;
+            int foundj = 0;
+            //Find hex in matrix
+            find:{
+                for(int j = 0; j<table.length;j++){
+                    for(int k = 0; k<table[j].length;k++){
+                        if(table[j][k]==hex){
+                            foundi=j;
+                            foundj=k;
+                            break find;
+                        }
+                    }
+                }
+            }
+            int mask = 0x00 | foundi;
+            mask = mask << 4;
+            int res = mask | foundj;
+            substituted+=(char)res;
+        }
+//        System.out.println("decrypt subs = " + substituted);
         return substituted;
     }
 }

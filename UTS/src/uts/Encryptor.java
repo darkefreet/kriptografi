@@ -15,20 +15,19 @@ import java.util.ArrayList;
 public class Encryptor {
     private String plainText, key;
     private SBox sBox;
+    public String cipherText;
     
     // 2
-    public int sisip (char c) {
-        int fourLeftBits = c & 0xF0;
-        int fourRightBits = c & 0x0F;
-        int shiftedFourLeftBits = fourLeftBits & 0x80 | (fourLeftBits >> 1) & 0x20 | (fourLeftBits >> 2) & 0x8 | (fourLeftBits >> 3) & 0x2;
-        int shiftedFourRightBits = fourRightBits & 0x01 | (fourRightBits << 1) & 0x04 | (fourLeftBits << 2) & 0x10 | (fourLeftBits << 3) & 0x40;
-        int joinedLeftAndRight = shiftedFourLeftBits | shiftedFourRightBits;
-        return joinedLeftAndRight;
+    private int sisip (char c) {
+        int res = (int)c;
+        int left = (res & 0x80)|(res & 0x40)>>1|(res & 0x20)>>2|(res & 0x10)>>3;
+        int right = (res & 0x08)<<3|(res & 0x04)<<2|(res & 0x02)<<1|(res & 0x01);
+        return (left|right);
     }
 
     // 3.1
     public int xorLeftRight (int c) {
-        int fourLeftBits = c >> 4;
+        int fourLeftBits = (c >> 4) &0x0F;
         int fourRightBits = c & 0x0F;
         return fourLeftBits ^ fourRightBits;
     }
@@ -39,7 +38,7 @@ public class Encryptor {
         int keyFourRightBits = key & 0x0F;
         int xoredkeyLeft = c ^ keyFourLeftBits;
         int xoredkeyRight = c ^ keyFourRightBits;
-        return (xoredkeyRight << 4) | xoredkeyLeft;
+        return ((xoredkeyRight|0x00) << 4) | (xoredkeyLeft & 0x0F);
     }
     
     // 5
@@ -95,8 +94,9 @@ public class Encryptor {
         for (int i = 0; i < text.length(); i++) {
             char textChar = text.charAt(i);
             char keyChar = key.charAt(i % key.length());
-            res += (char)(xorHasilSementara(xorLeftRight(sisip(textChar)), keyChar));
+            res += (char)(xorHasilSementara(xorLeftRight(keyChar),(char)sisip(textChar)));
         }
+        
         return res;
     }
     
@@ -108,7 +108,8 @@ public class Encryptor {
     public String encrypt() {
         String resLdse = langkahDuaSampaiEmpat(plainText);
         String resGtke = geserTigaKaliEmpat(resLdse);
-        return langkahDuaSampaiEmpat(resGtke);
+        cipherText = langkahDuaSampaiEmpat(resGtke);
+        return cipherText;
     }
     
 }
