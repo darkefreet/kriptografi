@@ -16,9 +16,9 @@ public class UTS {
 
     public static void main (String args[]) throws IOException {
         System.out.println("TriTOLE");
-        Encryptor e = new Encryptor("abcdefghijklmnopqrstuvwxyz", "123551123ab");
+        Encryptor e = new Encryptor("abcdefghijklmnopqrstuvwxyz", "zadtx012");
         System.out.println(e.encrypt());
-        Decryptor d = new Decryptor(e.cipherText,"123551123ab");
+        Decryptor d = new Decryptor(e.cipherText,"zadtx012");
         System.out.println(d.decrypt());
     }
 

@@ -33,12 +33,20 @@ public class Encryptor {
     }
 
     // 3.2 - 3.4
-    public int xorHasilSementara (int c, char key) {
-        int keyFourLeftBits = key >> 4;
-        int keyFourRightBits = key & 0x0F;
-        int xoredkeyLeft = c ^ keyFourLeftBits;
-        int xoredkeyRight = c ^ keyFourRightBits;
+    public int xorHasilSementara (int key, char c) {
+        int charFourLeftBits = c >> 4;
+        int charFourRightBits = c & 0x0F;
+        int xoredkeyLeft = key ^ charFourLeftBits;
+        int xoredkeyRight = key ^ charFourRightBits;
         return ((xoredkeyRight|0x00) << 4) | (xoredkeyLeft & 0x0F);
+    }
+    
+    public int xorHasil(int key, char c){
+        int charFourLeftBits = c >> 4;
+        int xorLeftandRight = xorLeftRight((int)c);
+        int xoredkeyLeft = key ^ charFourLeftBits;
+        int xoredkeyRight = xorLeftandRight;
+        return ((xoredkeyLeft|0x00) << 4) | (xoredkeyRight & 0x0F);
     }
     
     // 5
@@ -94,7 +102,7 @@ public class Encryptor {
         for (int i = 0; i < text.length(); i++) {
             char textChar = text.charAt(i);
             char keyChar = key.charAt(i % key.length());
-            res += (char)(xorHasilSementara(xorLeftRight(keyChar),(char)sisip(textChar)));
+            res += (char)(xorHasil(xorLeftRight(keyChar),(char)sisip(textChar)));
         }
         
         return res;
