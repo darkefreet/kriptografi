@@ -30,21 +30,12 @@ public class Decryptor {
         int fourRightBits = c & 0x0F;
         return fourLeftBits ^ fourRightBits;
     }
-
-    // 3.2 - 3.4
-    public int xorHasilSementara (int key, char c) {
+    
+    public int xorHasil(int key,int keyRight, char c){
         int charFourLeftBits = c >> 4;
         int charFourRightBits = c & 0x0F;
         int xoredkeyLeft = key ^ charFourLeftBits;
-        int xoredkeyRight = key ^ charFourRightBits;
-        return ((xoredkeyRight|0x00) << 4) | (xoredkeyLeft & 0x0F);
-    }
-    
-    public int xorHasil(int key, char c){
-        int charFourLeftBits = c >> 4;
-        int xorLeftandRight = xorLeftRight((int)c);
-        int xoredkeyLeft = key ^ charFourLeftBits;
-        int xoredkeyRight = key ^ xorLeftandRight;
+        int xoredkeyRight = keyRight ^ charFourRightBits;
         return ((xoredkeyLeft|0x00) << 4) | (xoredkeyRight & 0x0F);
     }
     
@@ -66,7 +57,8 @@ public class Decryptor {
         for (int i = 0; i < text.length(); i++) {
             char textChar = text.charAt(i);
             char keyChar = key.charAt(i % key.length());
-            res += (char)(xorHasil(xorLeftRight(keyChar), textChar));
+            res += (char)(xorHasil(xorLeftRight(keyChar),(keyChar&0x0F), textChar));
+            
         }
         return res;
     }
