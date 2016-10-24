@@ -13,9 +13,9 @@ import java.util.ArrayList;
  * @author ivan
  */
 public class Encryptor {
-    private String plainText, key;
+    private String key;
     private SBox sBox;
-    public String cipherText;
+    public String plainText,cipherText;
     
     // 2
     private int sisip (char c) {

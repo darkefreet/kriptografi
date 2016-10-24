@@ -58,7 +58,6 @@ public class Decryptor {
             char textChar = text.charAt(i);
             char keyChar = key.charAt(i % key.length());
             res += (char)(xorHasil(xorLeftRight(keyChar),(keyChar&0x0F), textChar));
-            
         }
         return res;
     }
