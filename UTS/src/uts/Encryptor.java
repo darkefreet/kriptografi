@@ -114,9 +114,12 @@ public class Encryptor {
     }
     
     public String encrypt() {
-        String resLdse = langkahDuaSampaiEmpat(plainText);
-        String resGtke = geserTigaKaliEmpat(resLdse);
-        cipherText = langkahDuaSampaiEmpat(resGtke);
+        String a = plainText;
+        for(int i = 0;i<3;i++){
+            a = langkahDuaSampaiEmpat(a);
+            a = geserTigaKaliEmpat(a);
+        }
+        cipherText = langkahDuaSampaiEmpat(a);
         return cipherText;
     }
     

@@ -106,9 +106,12 @@ public class Decryptor {
     }
     
     public String decrypt(){
-        String res = "";
-        res = langkahSatuSampaiTiga(cipherText);
-        res = geserTigaKeKiri(res);
+        String res = cipherText;
+        
+        for(int i = 0;i<3;i++){
+            res = langkahSatuSampaiTiga(res);
+            res = geserTigaKeKiri(res);
+        }
         return langkahSatuSampaiTiga(res);
     }
 }
