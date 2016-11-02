@@ -42,13 +42,15 @@ public class UTS {
             }
         }
         int totalBits = a.length() * 8;
+        System.out.println(count);
+        System.out.println(totalBits);
         float percentage = count*100 / totalBits;
         return percentage;
     }
     
     public static void main (String args[]) throws IOException {
         System.out.println("TriTOLE");
-        String plainteks = "abcdefghijklmnopqrstuvwxyz1234567890 aku adalah anak tole yang tak pernah capek";
+        String plainteks = "abcdefghijklmnopqrstuvwxyz1234567890 aku adalah anak tole yang tak pernah capek. Bilamana aku capek, maka aku bukanlah anak tole.";
         String passEncrypt = "chaos";
         Encryptor e = new Encryptor(plainteks, passEncrypt);
         
@@ -60,7 +62,7 @@ public class UTS {
         System.out.println("Frekuensi Cipherteks    : ");
         countFrequency(e.cipherText);
         
-        String passDecrypt =  "chaos";
+        String passDecrypt =  "cha-os";
         Decryptor d = new Decryptor(e.cipherText,passDecrypt);
         
         System.out.println("Hasil dekripsi          : ");
