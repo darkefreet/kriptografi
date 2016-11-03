@@ -45,7 +45,7 @@ public class Point implements java.io.Serializable {
             this.x = A.x;this.y = A.y; this.isInfinite = A.isInfinite;
         }else if(!this.isInfinite && A.isInfinite){
             //tidak terjadi apa-apa
-        //apabila x ada pada nilai sama dan y berbeda, maka tidak akan ada titik potong
+            //apabila x ada pada nilai sama dan y berbeda, maka tidak akan ada titik potong
         }else if(A.x.compareTo(this.x) == 0 && A.y.compareTo(this.y) != 0){
             this.x = BigInteger.ZERO; this.y = BigInteger.ZERO; this.isInfinite = true;
         }else{
