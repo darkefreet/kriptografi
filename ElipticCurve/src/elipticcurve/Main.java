@@ -33,6 +33,8 @@ public class Main {
         A.subtract(B);
         System.out.println(A);
         
+        GeneratePublicKey gen = new GeneratePublicKey(secretKey);
+        
     }
     
 }

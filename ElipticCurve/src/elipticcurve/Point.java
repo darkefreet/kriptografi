@@ -15,15 +15,16 @@ public class Point implements java.io.Serializable {
     public boolean isInfinite;
     
     //dengan menggunakan persamaan garis y^2 = (x^3 - ax + b)mod p
-    private BigInteger a = new BigInteger("288937966341008974394958833000411530289");
-    private BigInteger b = new BigInteger("295373872160112650229366291117588408953");
-    private BigInteger p = new BigInteger("105139298820387285020279308031635816026384252718363932740720768800893694918643");
+    public BigInteger a = new BigInteger("288937966341008974394958833000411530289");
+    public BigInteger b = new BigInteger("295373872160112650229366291117588408953");
+    public BigInteger p = new BigInteger("105139298820387285020279308031635816026384252718363932740720768800893694918643");
     
     public Point(BigInteger _x, BigInteger _y){
         this.x = _x;
         this.y = _y;
         this.isInfinite = false;
     }
+    
     
     private BigInteger countGradient(Point A){
         return this.y.subtract(A.y).multiply( this.x.subtract(A.x).mod(this.p).modInverse(this.p)).mod(this.p);
