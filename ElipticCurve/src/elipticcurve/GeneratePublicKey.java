@@ -16,8 +16,8 @@ public class GeneratePublicKey {
     
     public GeneratePublicKey(){
     }
-    
-    public Point Generate(){
-        return new Point(BigInteger.ZERO,BigInteger.ZERO);
-    }
+//    
+//    public Point Generate(){
+//        return new Point(BigInteger.ZERO,BigInteger.ZERO);
+//    }
 }
