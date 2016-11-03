@@ -10,6 +10,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.*;
 import java.io.*;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -22,7 +26,8 @@ public class GUI {
     
     static JFrame frame;
     static JButton loadFileBtn;
-    
+    static JTextArea inputFileSizeField;
+    static JTextArea inputFileTextField;
     
     static final int frameWidth = 1200;
     static final int frameHeight = 500;
@@ -40,22 +45,42 @@ public class GUI {
         loadFileBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e)
             {
-                selectFile();
+                try {
+                    selectFile();
+                } catch (IOException ex) {
+                    Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
+        
+        // Input file size field
+        inputFileSizeField = new JTextArea();
+        inputFileSizeField.setBounds(20, 60, 150, 20);
+        inputFileSizeField.setText("");
+        
+        // Input file text field
+        inputFileTextField = new JTextArea();
+        inputFileTextField.setBounds(20, 100, 150, 20);
+        inputFileTextField.setText("");
  
         frame.add(loadFileBtn);
+        frame.add(inputFileSizeField);
+        frame.add(inputFileTextField);
         frame.setSize(frameWidth, frameHeight);
         frame.setResizable(false);
         frame.setVisible(true);
     }
     
-    public static File selectFile() {
+    public static File selectFile() throws IOException {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
         int result = fileChooser.showOpenDialog(frame);
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
+            Path pathObject = FileSystems.getDefault().getPath(selectedFile.getPath());
+            BasicFileAttributes bfa = Files.readAttributes(pathObject, BasicFileAttributes.class);
+            inputFileSizeField.setText(String.valueOf(bfa.size()) + " byte");
+//            inputFileTextField.setText(Files.readAllBytes(pathObject).toString());
             return selectedFile;
         } else {
             return null;

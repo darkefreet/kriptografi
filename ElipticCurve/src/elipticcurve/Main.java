@@ -33,8 +33,12 @@ public class Main {
         A.subtract(B);
         System.out.println(A);
         
-        GeneratePublicKey gen = new GeneratePublicKey(secretKey);
+//        GeneratePublicKey gen = new GeneratePublicKey(secretKey);
         
+        Tonelli ton = new Tonelli();
+        for(BigInteger i = BigInteger.ZERO;i.compareTo(new BigInteger("9223372036854775808"))==-1;i = i.add(BigInteger.ONE)){
+            System.out.println(ton.tonelli(i,new BigInteger("9223372036854775811") ));
+        }
     }
     
 }
