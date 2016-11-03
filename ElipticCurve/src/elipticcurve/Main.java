@@ -20,10 +20,16 @@ public class Main {
         BigInteger secretKey = new BigInteger("54934800194295125130027198403007499669433624690246747465573904234214271660537");
         
         Point A = new Point(new BigInteger("2"),new BigInteger("4"));
-        Point B = new Point(new BigInteger("5"),new BigInteger("9"));
+        Point B = new Point(new BigInteger("2"),new BigInteger("4"));
         
         A.add(B);
         System.out.println(A);
+        A.subtract(B);
+        System.out.println(A);
+        
+        A.times(new BigInteger("4"));
+        A.subtract(B);
+        A.subtract(B);
         A.subtract(B);
         System.out.println(A);
         

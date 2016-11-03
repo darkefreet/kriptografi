@@ -14,10 +14,10 @@ public class Point implements java.io.Serializable {
     public BigInteger x,y;
     public boolean isInfinite;
     
-    //dengan menggunakan persamaan garis y^2 = (x^3 - 12x + 13)mod 17
-    private BigInteger a = new BigInteger("-12");
-    private BigInteger b = new BigInteger("13");
-    private BigInteger p = new BigInteger("17");
+    //dengan menggunakan persamaan garis y^2 = (x^3 - ax + b)mod p
+    private BigInteger a = new BigInteger("288937966341008974394958833000411530289");
+    private BigInteger b = new BigInteger("295373872160112650229366291117588408953");
+    private BigInteger p = new BigInteger("105139298820387285020279308031635816026384252718363932740720768800893694918643");
     
     public Point(BigInteger _x, BigInteger _y){
         this.x = _x;
@@ -26,12 +26,7 @@ public class Point implements java.io.Serializable {
     }
     
     private BigInteger countGradient(Point A){
-        BigInteger difY = A.y.subtract(this.y);
-        System.out.println("difY = "+difY);
-        BigInteger difX = A.x.subtract(this.x);
-        System.out.println("difX = "+difX);
-        BigInteger hasil = difY.divide(difX);
-        return hasil.mod(this.p);
+        return this.y.subtract(A.y).multiply( this.x.subtract(A.x).mod(this.p).modInverse(this.p)).mod(this.p);
     }
     
     public void add(Point A){
@@ -51,22 +46,43 @@ public class Point implements java.io.Serializable {
         }else{
             
             BigInteger gradient = countGradient(A);
-            System.out.println(gradient);
             BigInteger oldX = this.x;
             BigInteger oldY = this.y;
-            this.x = gradient.pow(2).subtract(oldX).subtract(A.x).mod(this.p);
-            this.y = gradient.multiply(oldX.subtract(this.x)).subtract(oldY).mod(this.p);
+            BigInteger newX = gradient.pow(2).subtract(oldX).subtract(A.x).mod(this.p);
+            BigInteger newY = gradient.multiply(oldX.subtract(newX)).subtract(oldY).add(this.p).mod(this.p);
+            
+            this.x = newX;
+            this.y = newY;
   
         }
     }
     
     public void subtract(Point A){
-        Point dummy = new Point(A.x.multiply(new BigInteger("-1")),A.y.multiply(new BigInteger("-1")));
+        Point dummy = new Point(A.x , A.y.multiply(new BigInteger("-1")).mod(this.p));
         add(dummy);
-        System.out.println(this.x);
     }
-    public void doubles(){
     
+    public void doubles(){
+        BigInteger gradient = this.x.multiply(this.x).multiply(new BigInteger("3")).add(this.a).multiply(new BigInteger("2").multiply(this.y).modInverse(this.p)).mod(this.p);
+	BigInteger oldX = this.x;
+        this.x = gradient.multiply(gradient).subtract(new BigInteger("2").multiply(this.x)).mod(this.p);		
+	this.y = gradient.multiply(oldX.subtract(this.x)).subtract(this.y).mod(this.p);
+    }
+    
+    public void times(BigInteger A){
+        if(A.compareTo(BigInteger.ZERO)==0){
+           this.x = BigInteger.ZERO;
+           this.y = BigInteger.ZERO;
+           this.isInfinite = false;
+        }else if(A.compareTo(BigInteger.ONE)==0){
+           //do nothing
+        }else{
+            A = A.subtract(BigInteger.ONE);
+            Point B = new Point(this.x,this.y);
+            for(BigInteger i = BigInteger.ZERO;i.compareTo(A)==-1;i=i.add(BigInteger.ONE)){
+                add(B);
+            }
+        }
     }
     
     @Override
