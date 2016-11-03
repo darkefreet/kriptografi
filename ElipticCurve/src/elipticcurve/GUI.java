@@ -26,8 +26,9 @@ public class GUI {
     
     static JFrame frame;
     static JButton loadFileBtn;
-    static JTextArea inputFileSizeField;
-    static JTextArea inputFileTextField;
+    static JTextArea inputFileSize;
+    static JTextArea inputFileText;
+    static JScrollPane inputFileTextPane;
     
     static final int frameWidth = 1200;
     static final int frameHeight = 500;
@@ -54,18 +55,21 @@ public class GUI {
         });
         
         // Input file size field
-        inputFileSizeField = new JTextArea();
-        inputFileSizeField.setBounds(20, 60, 150, 20);
-        inputFileSizeField.setText("");
+        inputFileSize = new JTextArea();
+        inputFileSize.setBounds(20, 60, 150, 20);
+        inputFileSize.setText("");
         
         // Input file text field
-        inputFileTextField = new JTextArea();
-        inputFileTextField.setBounds(20, 100, 150, 20);
-        inputFileTextField.setText("");
+        inputFileText = new JTextArea();
+        inputFileText.setColumns(20);
+        inputFileText.setRows(5);
+        inputFileTextPane = new JScrollPane();
+        inputFileTextPane.setBounds(20, 100, 150, 300);
+        inputFileTextPane.setViewportView(inputFileText);
  
         frame.add(loadFileBtn);
-        frame.add(inputFileSizeField);
-        frame.add(inputFileTextField);
+        frame.add(inputFileSize);
+        frame.add(inputFileTextPane);
         frame.setSize(frameWidth, frameHeight);
         frame.setResizable(false);
         frame.setVisible(true);
@@ -79,8 +83,13 @@ public class GUI {
             File selectedFile = fileChooser.getSelectedFile();
             Path pathObject = FileSystems.getDefault().getPath(selectedFile.getPath());
             BasicFileAttributes bfa = Files.readAttributes(pathObject, BasicFileAttributes.class);
-            inputFileSizeField.setText(String.valueOf(bfa.size()) + " byte");
-//            inputFileTextField.setText(Files.readAllBytes(pathObject).toString());
+            inputFileSize.setText(String.valueOf(bfa.size()) + " byte");
+            byte[] bytes = Files.readAllBytes(pathObject);
+            StringBuilder buffer = new StringBuilder(); 
+            for(int i = 0; i < bytes.length; i++){
+                buffer.append((char)bytes[i]);
+            }
+            inputFileText.setText(buffer.toString());
             return selectedFile;
         } else {
             return null;
