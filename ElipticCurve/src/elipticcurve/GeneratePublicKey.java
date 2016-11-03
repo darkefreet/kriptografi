@@ -13,11 +13,14 @@ import java.math.BigInteger;
  */
 public class GeneratePublicKey {
 
+    private BigInteger secret;
     
-    public GeneratePublicKey(){
+    public GeneratePublicKey(BigInteger _secret){
+        this.secret = _secret;
     }
-//    
-//    public Point Generate(){
-//        return new Point(BigInteger.ZERO,BigInteger.ZERO);
-//    }
+    
+    public Point Generate(BigInteger x){
+        
+        return new Point(BigInteger.ZERO,BigInteger.ZERO);
+    }
 }
