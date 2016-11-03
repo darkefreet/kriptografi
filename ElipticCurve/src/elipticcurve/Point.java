@@ -15,13 +15,20 @@ public class Point implements java.io.Serializable {
     public boolean isInfinite;
     
     //dengan menggunakan persamaan garis y^2 = (x^3 - ax + b)mod p
-    public BigInteger a = new BigInteger("288937966341008974394958833000411530289");
-    public BigInteger b = new BigInteger("295373872160112650229366291117588408953");
-    public BigInteger p = new BigInteger("105139298820387285020279308031635816026384252718363932740720768800893694918643");
+    public BigInteger a = new BigInteger("758310389");
+    public BigInteger b = new BigInteger("3727170449");
+    public BigInteger p = new BigInteger("9223372036854775811");
     
     public Point(BigInteger _x, BigInteger _y){
         this.x = _x;
         this.y = _y;
+        this.isInfinite = false;
+    }
+    
+    public Point(BigInteger _x){
+        this.x = _x;
+        Tonelli ton = new Tonelli();
+        this.y = ton.encode(this.x, this.p);
         this.isInfinite = false;
     }
     
@@ -77,14 +84,14 @@ public class Point implements java.io.Serializable {
            this.isInfinite = false;
         }else if(A.compareTo(BigInteger.ONE)==0){
            //do nothing
+        }else if(A.mod(new BigInteger("2")).equals(BigInteger.ZERO)){
+            this.doubles();
+            times(A.divide(new BigInteger("2")));
         }else{
-            A = A.subtract(BigInteger.ONE);
-            Point B = new Point(this.x,this.y);
-            for(BigInteger i = BigInteger.ZERO;i.compareTo(A)==-1;i=i.add(BigInteger.ONE)){
-                add(B);
-            }
+            add(this);
         }
     }
+    
     
     @Override
     public String toString(){

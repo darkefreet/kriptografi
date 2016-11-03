@@ -16,12 +16,9 @@ import java.util.Date;
 public class Koblitz {
     
     private static final Charset UTF_8 = Charset.forName("UTF-8");
-    private static BigInteger a = new BigInteger("1298168629042284227");
-    private static BigInteger b = new BigInteger("1623552840218452387");
-    private static BigInteger p = new BigInteger("197642558969933863176093209873160239227");
-//    private static BigInteger a = new BigInteger("-1");
-//    private static BigInteger b = new BigInteger("188");
-//    private static BigInteger p = new BigInteger("751");
+    private static BigInteger a = new BigInteger("758310389");
+    private static BigInteger b = new BigInteger("3727170449");
+    private static BigInteger p = new BigInteger("9223372036854775811");
     private static BigInteger k = new BigInteger("20");
     
     public Koblitz(BigInteger a, BigInteger b, BigInteger p, BigInteger k, String text) {
@@ -96,24 +93,4 @@ public class Koblitz {
         
         return decoded;
     }
-    
-    public static void main(String args[]) {
-
-        long startTimeEncode = System.currentTimeMillis();
-        
-        System.out.println(getX(new BigInteger("600")));
-        
-//        String encoded = encode("abcdefghijklmnopqrstuvwxyz");
-//        long elapsedTimeEncode = (new Date()).getTime() - startTimeEncode;
-//        System.out.println(elapsedTimeEncode + "ms");
-//        System.out.println(encoded);
-        
-//        long startTimeDecode = System.currentTimeMillis();
-//        String decoded = decode(encoded);
-//        long elapsedTimeDecode = (new Date()).getTime() - startTimeDecode;
-//        System.out.println(elapsedTimeDecode + "ms");
-//        System.out.println(decoded);
-
-    }
-    
 }

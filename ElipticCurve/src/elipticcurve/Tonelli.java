@@ -23,7 +23,7 @@ public class Tonelli {
         
     }
     
-    public BigInteger tonelli (BigInteger n, BigInteger p) {
+    public BigInteger encode (BigInteger n, BigInteger p) {
         assert(legendre(n, p).compareTo(ONE) == 0); // asersi
         BigInteger q = p.subtract(ONE);
         BigInteger s = ZERO;
@@ -71,6 +71,7 @@ public class Tonelli {
             t = t.multiply(c).mod(p);
             m = i;     
             count++;
+            
         }
         
         return r;

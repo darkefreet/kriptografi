@@ -5,6 +5,7 @@
  */
 package elipticcurve;
 import java.math.BigInteger;
+import java.util.Random;
 
 /**
  *
@@ -15,30 +16,48 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        //private key a 256 bits in size
-        BigInteger secretKey = new BigInteger("54934800194295125130027198403007499669433624690246747465573904234214271660537");
+    private static final BigInteger k = new BigInteger("43");
+    private static final BigInteger secretKey = new BigInteger("10320885690046317857");
+    
+    private static Pair encrypt(BigInteger m, Point _base, Point publicKey){
         
-        Point A = new Point(new BigInteger("2"),new BigInteger("4"));
-        Point B = new Point(new BigInteger("2"),new BigInteger("4"));
+        Point pM = new Point(m);
+        Point A = new Point(_base.x,_base.y);
+        A.times(k);
         
-        A.add(B);
-        System.out.println(A);
-        A.subtract(B);
-        System.out.println(A);
+        Point B = new Point(publicKey.x,publicKey.y);
         
-        A.times(new BigInteger("4"));
-        A.subtract(B);
-        A.subtract(B);
-        A.subtract(B);
-        System.out.println(A);
+        B.times(k);
+        B.add(pM);
         
-//        GeneratePublicKey gen = new GeneratePublicKey(secretKey);
-        
-        Tonelli ton = new Tonelli();
-        for(BigInteger i = BigInteger.ZERO;i.compareTo(new BigInteger("9223372036854775808"))==-1;i = i.add(BigInteger.ONE)){
-            System.out.println(ton.tonelli(i,new BigInteger("9223372036854775811") ));
-        }
+        return new Pair(A,B);
     }
+    
+//    private static BigInteger decrypt(Pair cipher, Point _base){
+//        Point item1 = _base; 
+//    }
+    
+    public static void main(String[] args) {
+        //private key a 64 bits in size
+        
+        Point base = new Point(new BigInteger("11245"));
+        GeneratePublicKey gen = new GeneratePublicKey(secretKey,base);
+        
+        //pesan yang dienkripsikan
+        BigInteger m = new BigInteger("212");
+        
+//        Point A = new Point(BigInteger.valueOf(2),BigInteger.valueOf(4));
+//        Point B = new Point(BigInteger.valueOf(2),BigInteger.valueOf(4));
+        
+//        A.times(BigInteger.valueOf(4));
+//        A.subtract(B);
+//        A.subtract(B);
+//        A.subtract(B);
+//        System.out.println(A);
+        System.out.println(encrypt(m,base,gen.getPublicKey()));
+        System.out.println(base);
+        
+    }
+
     
 }
