@@ -28,18 +28,11 @@ public class Main {
         return String.format("%040x", new BigInteger(1, arg.getBytes(/*YOUR_CHARSET?*/)));
     }
     
-    public static byte[] longToBytes(long x) {
-        ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
-        buffer.putLong(x);
-        return buffer.array();
-    }
-
-    public static long bytesToLong(byte[] bytes) {
-        ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
-        System.out.println(bytes.length);
-        buffer.put(bytes);
-        buffer.flip();//need flip 
-        return buffer.getLong();
+    public static String backToString(String hexString) throws UnsupportedEncodingException{
+        byte[] bytes = new byte[hexString.length()];
+        for(int i = 0; i < hexString.length();i++)
+            bytes[i] = Byte.parseByte(hexString, 16); 
+        return new String(bytes, "UTF-8");
     }
     
     private static Pair encrypt(BigInteger m, Point _base, Point publicKey){
@@ -97,11 +90,11 @@ public class Main {
             }
             BigInteger m = new BigInteger(str.getBytes());
             Pair encryptedPair = encrypt(m,base,publicKey);
-            System.out.println(encryptedPair);
+//            System.out.println(encryptedPair);s
             if(count == 0){
                 BigInteger X = encryptedPair.A.x;
                 BigInteger Y = encryptedPair.A.y;
-                System.out.println("tes" + backToBig(getString(X)));
+//                System.out.println("tes" + backToBig(getString(X)));
                 encryptedText += getString(X);
                 encryptedText += getString(Y);
                 count++;
@@ -109,7 +102,7 @@ public class Main {
             encryptedText += getString(encryptedPair.B.x);
             encryptedText += getString(encryptedPair.B.y);
         }
-        System.out.println(encryptedText);
+//        System.out.println(encryptedText);
         return encryptedText;
     }
     
@@ -123,13 +116,13 @@ public class Main {
         String keyA = strings.get(0);
         String keyB = strings.get(1);
         String plainteks = ""; 
-        System.out.println("--decrypt");
+//        System.out.println("--decrypt");
         for(int i = 2; i<strings.size(); i+=2){
             String cipherLeft = strings.get(i);
             String cipherRight = strings.get(i+1);
             Pair cipher = new Pair(new Point(backToBig(keyA),backToBig(keyB)),new Point(backToBig(cipherLeft),backToBig(cipherRight)));
    
-            System.out.println(cipher);
+//            System.out.println(cipher);
             BigInteger plain = decrypt(cipher,base);
             plainteks += new String(plain.toByteArray());
         }
@@ -143,6 +136,10 @@ public class Main {
         Point base = new Point(new BigInteger("11245"));
         GeneratePublicKey gen = new GeneratePublicKey(secretKey,base);
         String plain = "abcde";
+        String hex = toHex(plain);
+        System.out.println(hex);
+        System.out.println(backToString(hex));
+        
         String cipher = encryptString(plain,base,gen.getPublicKey());
         System.out.println(decryptString(cipher,base));
 
