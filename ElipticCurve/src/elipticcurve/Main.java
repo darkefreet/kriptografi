@@ -7,7 +7,7 @@ package elipticcurve;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
-import java.nio.ByteBuffer;
+import javax.xml.bind.DatatypeConverter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -23,17 +23,6 @@ public class Main {
      */
     private static final BigInteger k = new BigInteger("43");
     private static final BigInteger secretKey = new BigInteger("10320885690046317857");
-    
-    public static String toHex(String arg) {
-        return String.format("%040x", new BigInteger(1, arg.getBytes(/*YOUR_CHARSET?*/)));
-    }
-    
-    public static String backToString(String hexString) throws UnsupportedEncodingException{
-        byte[] bytes = new byte[hexString.length()];
-        for(int i = 0; i < hexString.length();i++)
-            bytes[i] = Byte.parseByte(hexString, 16); 
-        return new String(bytes, "UTF-8");
-    }
     
     private static Pair encrypt(BigInteger m, Point _base, Point publicKey){
         
@@ -103,10 +92,11 @@ public class Main {
             encryptedText += getString(encryptedPair.B.y);
         }
 //        System.out.println(encryptedText);
-        return encryptedText;
+        return DatatypeConverter.printHexBinary(encryptedText.getBytes());
     }
     
     private static String decryptString(String cipherteks,Point base){
+        cipherteks = new String(DatatypeConverter.parseHexBinary(cipherteks));
         List<String> strings = new ArrayList<String>();
         int index = 0;
         while (index < cipherteks.length()) {
@@ -121,8 +111,6 @@ public class Main {
             String cipherLeft = strings.get(i);
             String cipherRight = strings.get(i+1);
             Pair cipher = new Pair(new Point(backToBig(keyA),backToBig(keyB)),new Point(backToBig(cipherLeft),backToBig(cipherRight)));
-   
-//            System.out.println(cipher);
             BigInteger plain = decrypt(cipher,base);
             plainteks += new String(plain.toByteArray());
         }
@@ -136,13 +124,10 @@ public class Main {
         Point base = new Point(new BigInteger("11245"));
         GeneratePublicKey gen = new GeneratePublicKey(secretKey,base);
         String plain = "abcde";
-        String hex = toHex(plain);
-        System.out.println(hex);
-        System.out.println(backToString(hex));
         
         String cipher = encryptString(plain,base,gen.getPublicKey());
+        System.out.println("cipherteks " + cipher);
         System.out.println(decryptString(cipher,base));
-
 
 //        
 //        System.out.print("Masukkan path: ");
