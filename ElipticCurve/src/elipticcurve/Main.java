@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -95,10 +97,11 @@ public class Main {
             }
             BigInteger m = new BigInteger(str.getBytes());
             Pair encryptedPair = encrypt(m,base,publicKey);
+            System.out.println(encryptedPair);
             if(count == 0){
                 BigInteger X = encryptedPair.A.x;
                 BigInteger Y = encryptedPair.A.y;
-                String cipherText = getString(X);
+                System.out.println("tes" + backToBig(getString(X)));
                 encryptedText += getString(X);
                 encryptedText += getString(Y);
                 count++;
@@ -111,19 +114,20 @@ public class Main {
     }
     
     private static String decryptString(String cipherteks,Point base){
-        System.out.println(cipherteks);
-        String[] splitBy8Chars = cipherteks.split("(?<=\\G........)");
-        String keyA = splitBy8Chars[0];
-        String keyB = splitBy8Chars[1];
+        List<String> strings = new ArrayList<String>();
+        int index = 0;
+        while (index < cipherteks.length()) {
+            strings.add(cipherteks.substring(index, Math.min(index + 8,cipherteks.length())));
+            index += 8;
+        }
+        String keyA = strings.get(0);
+        String keyB = strings.get(1);
         String plainteks = ""; 
         System.out.println("--decrypt");
-        System.out.println("content " + splitBy8Chars[0] + "----" + splitBy8Chars[1] + "-----" + splitBy8Chars[2]);
-        System.out.println(new BigInteger(keyA.getBytes()));
-        System.out.println(new BigInteger(keyB.getBytes()));
-        for(int i = 2; i<splitBy8Chars.length; i+=2){
-            String cipherLeft = splitBy8Chars[i];
-            String cipherRight = splitBy8Chars[i+1];
-            Pair cipher = new Pair(new Point(new BigInteger(keyA.getBytes()),new BigInteger(keyB.getBytes())),new Point(new BigInteger(cipherLeft.getBytes()),new BigInteger(cipherRight.getBytes())));
+        for(int i = 2; i<strings.size(); i+=2){
+            String cipherLeft = strings.get(i);
+            String cipherRight = strings.get(i+1);
+            Pair cipher = new Pair(new Point(backToBig(keyA),backToBig(keyB)),new Point(backToBig(cipherLeft),backToBig(cipherRight)));
    
             System.out.println(cipher);
             BigInteger plain = decrypt(cipher,base);
