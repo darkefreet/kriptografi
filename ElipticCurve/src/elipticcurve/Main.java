@@ -53,18 +53,20 @@ public class Main {
         
         return new Pair(A,B);
     }
-    //only for max 64 bit number
+//    //only for max 64 bit number
     private static String getString(BigInteger big){
         String ret = "";
-        long z = big.longValue();
-        ret = new String(longToBytes(z));
-        System.out.println(longToBytes(z).length);
+        byte[] z = big.toByteArray();
+        for(int i = 0;i<8;i++)
+            ret+= (char)(z[i] & 0xFF);
         return ret;
     }
     
     private static BigInteger backToBig(String st){
-        BigInteger ret = new BigInteger(st.getBytes());
-        return ret;
+        byte[] z = new byte[8];
+        for(int i = 0;i<8;i++)
+            z[i] = (byte)st.charAt(i);
+        return new BigInteger(z);
     }
     
     private static BigInteger decrypt(Pair cipher, Point _base){
@@ -96,14 +98,7 @@ public class Main {
             if(count == 0){
                 BigInteger X = encryptedPair.A.x;
                 BigInteger Y = encryptedPair.A.y;
-//                System.out.println(X.toByteArray());
                 String cipherText = getString(X);
-                System.out.println(backToBig(cipherText));
-//                System.out.println("----batas");
-//                for(int l = 0; l<cipherX.length();l++){
-//                    System.out.println((int)cipherX.charAt(l));
-//                }
-//                System.out.println("----batas");
                 encryptedText += getString(X);
                 encryptedText += getString(Y);
                 count++;
@@ -111,22 +106,18 @@ public class Main {
             encryptedText += getString(encryptedPair.B.x);
             encryptedText += getString(encryptedPair.B.y);
         }
+        System.out.println(encryptedText);
         return encryptedText;
     }
     
     private static String decryptString(String cipherteks,Point base){
+        System.out.println(cipherteks);
         String[] splitBy8Chars = cipherteks.split("(?<=\\G........)");
         String keyA = splitBy8Chars[0];
-//        
-//        System.out.println("----batas");
-//        for(int l = 0; l<keyA.length();l++){
-//            System.out.println((int)keyA.charAt(l));
-//        }
-//            
-//            System.out.println("----batas");
         String keyB = splitBy8Chars[1];
         String plainteks = ""; 
         System.out.println("--decrypt");
+        System.out.println("content " + splitBy8Chars[0] + "----" + splitBy8Chars[1] + "-----" + splitBy8Chars[2]);
         System.out.println(new BigInteger(keyA.getBytes()));
         System.out.println(new BigInteger(keyB.getBytes()));
         for(int i = 2; i<splitBy8Chars.length; i+=2){
@@ -150,6 +141,8 @@ public class Main {
         String plain = "abcde";
         String cipher = encryptString(plain,base,gen.getPublicKey());
         System.out.println(decryptString(cipher,base));
+
+
 //        
 //        System.out.print("Masukkan path: ");
 //        String pathStr = s.nextLine();
