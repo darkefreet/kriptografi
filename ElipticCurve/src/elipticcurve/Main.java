@@ -92,11 +92,13 @@ public class Main {
             encryptedText += getString(encryptedPair.B.y);
         }
 //        System.out.println(encryptedText);
+        System.out.println(encryptedText);
         return DatatypeConverter.printHexBinary(encryptedText.getBytes());
     }
     
     private static String decryptString(String cipherteks,Point base){
         cipherteks = new String(DatatypeConverter.parseHexBinary(cipherteks));
+        System.out.println(cipherteks);
         List<String> strings = new ArrayList<String>();
         int index = 0;
         while (index < cipherteks.length()) {
@@ -123,11 +125,12 @@ public class Main {
         
         Point base = new Point(new BigInteger("11245"));
         GeneratePublicKey gen = new GeneratePublicKey(secretKey,base);
-        String plain = "abcde";
+        String plain = "abcdefghijklmnopqrstuvwxyz";
         
         String cipher = encryptString(plain,base,gen.getPublicKey());
         System.out.println("cipherteks " + cipher);
         System.out.println(decryptString(cipher,base));
+        System.out.println("tole");
 
 //        
 //        System.out.print("Masukkan path: ");
@@ -143,9 +146,14 @@ public class Main {
 //        }
 //        String fileString = buffer.toString();
 //        
-        
-        
-        
+//        String originalFileStr = FileHelper.read(s.nextLine());
+//        String cipherText = encryptString(originalFileStr, base, gen.getPublicKey());
+//        FileHelper.write(cipherText, "cipher");
+//        
+//        String cipherFileStr = FileHelper.read("cipher");
+//        String decryptedText = decryptString(cipherFileStr, base);
+//        FileHelper.write(decryptedText, "decrypted");
+
         //pesan yang dienkripsikan
         
 //        Point A = new Point(BigInteger.valueOf(2),BigInteger.valueOf(4));
