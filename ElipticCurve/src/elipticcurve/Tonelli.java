@@ -29,6 +29,7 @@ public class Tonelli {
         BigInteger s = ZERO;
 
         while(q.mod(TWO).compareTo(ZERO) == 0) {
+            System.out.println("a");
             q = q.divide(TWO);
             s = s.add(ONE);
         }
@@ -39,6 +40,7 @@ public class Tonelli {
         
         BigInteger z = TWO;
         while ((z.compareTo(p) == -1) || (z.compareTo(p) == 0)) {
+            System.out.println("b");
             if (p.subtract(ONE).compareTo(legendre(z, p)) == 0) {
                 break;
             }
@@ -54,6 +56,7 @@ public class Tonelli {
     
         
         while (t.subtract(ONE).mod(p).compareTo(ZERO) != 0) {
+            System.out.println("c");
             t2 = t.multiply(t).mod(p);
             
             BigInteger i = ONE;

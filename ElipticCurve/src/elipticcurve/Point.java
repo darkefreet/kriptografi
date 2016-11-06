@@ -15,10 +15,13 @@ public class Point implements java.io.Serializable {
     public boolean isInfinite;
     
     //dengan menggunakan persamaan garis y^2 = (x^3 - ax + b)mod p
-    public BigInteger a = new BigInteger("758310389");
-    public BigInteger b = new BigInteger("3727170449");
-    public BigInteger p = new BigInteger("9223372036854775801");
-    
+//    public BigInteger a = new BigInteger("758310389");
+//    public BigInteger b = new BigInteger("3727170449");
+//    public BigInteger p = new BigInteger("9223372036854775801");
+    private static BigInteger a = new BigInteger("-1");
+    private static BigInteger b = new BigInteger("188");
+    private static BigInteger p = new BigInteger("751");
+
     public Point(BigInteger _x, BigInteger _y){
         this.x = _x;
         this.y = _y;
@@ -29,8 +32,9 @@ public class Point implements java.io.Serializable {
         this.x = _x;
 //        Tonelli ton = new Tonelli();
 //        this.y = ton.encode(this.x, this.p);
-        BigInteger quadratic = x.multiply(x).add(a).multiply(x).add(b).mod(p);
-        this.y = quadratic.modPow(p.add(BigInteger.ONE).divide(BigInteger.valueOf(4)), p);
+//        BigInteger quadratic = x.multiply(x).add(a).multiply(x).add(b).mod(p);
+//        this.y = quadratic.modPow(p.add(BigInteger.ONE).divide(BigInteger.valueOf(4)), p);
+        this.y = Koblitz.encode2(_x);
         this.isInfinite = false;
     }
     
