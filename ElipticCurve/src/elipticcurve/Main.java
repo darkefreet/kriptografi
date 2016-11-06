@@ -21,7 +21,7 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    private static final BigInteger k = new BigInteger("43");
+    private static final BigInteger k = new BigInteger("30");
     private static final BigInteger secretKey = new BigInteger("10320885690046317857");
     
     private static Pair encrypt(BigInteger m, Point _base, Point publicKey){
@@ -108,11 +108,13 @@ public class Main {
         String keyA = strings.get(0);
         String keyB = strings.get(1);
         String plainteks = ""; 
-//        System.out.println("--decrypt");
+        System.out.println("--decrypt");
         for(int i = 2; i<strings.size(); i+=2){
             String cipherLeft = strings.get(i);
             String cipherRight = strings.get(i+1);
             Pair cipher = new Pair(new Point(backToBig(keyA),backToBig(keyB)),new Point(backToBig(cipherLeft),backToBig(cipherRight)));
+            
+            System.out.println(cipher);
             BigInteger plain = decrypt(cipher,base);
             plainteks += new String(plain.toByteArray());
         }
@@ -123,9 +125,9 @@ public class Main {
         //private key a 64 bits in size
         Scanner s = new Scanner(System.in);
         
-        Point base = new Point(new BigInteger("11245"));
+        Point base = new Point(new BigInteger("12345678"));
         GeneratePublicKey gen = new GeneratePublicKey(secretKey,base);
-        String plain = "abcdefghijklmnopqrstuvwxyz";
+        String plain = "abcdefghijklmnopqrstuvwxyz-0123456789-ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         
         String cipher = encryptString(plain,base,gen.getPublicKey());
         System.out.println("cipherteks " + cipher);

@@ -17,7 +17,7 @@ public class Point implements java.io.Serializable {
     //dengan menggunakan persamaan garis y^2 = (x^3 - ax + b)mod p
     public BigInteger a = new BigInteger("758310389");
     public BigInteger b = new BigInteger("3727170449");
-    public BigInteger p = new BigInteger("9223372036854775811");
+    public BigInteger p = new BigInteger("9223372036854775801");
     
     public Point(BigInteger _x, BigInteger _y){
         this.x = _x;
@@ -27,8 +27,10 @@ public class Point implements java.io.Serializable {
     
     public Point(BigInteger _x){
         this.x = _x;
-        Tonelli ton = new Tonelli();
-        this.y = ton.encode(this.x, this.p);
+//        Tonelli ton = new Tonelli();
+//        this.y = ton.encode(this.x, this.p);
+        BigInteger quadratic = x.multiply(x).add(a).multiply(x).add(b).mod(p);
+        this.y = quadratic.modPow(p.add(BigInteger.ONE).divide(BigInteger.valueOf(4)), p);
         this.isInfinite = false;
     }
     
