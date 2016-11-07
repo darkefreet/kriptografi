@@ -124,9 +124,13 @@ public class Main2 {
     public static void main(String[] args) throws IOException {
         //private key a 64 bits in size
         Scanner s = new Scanner(System.in);
-        
+       
         Point base = new Point(new BigInteger("12345678"));
         GeneratePublicKey gen = new GeneratePublicKey(secretKey,base);
+        System.out.println("public key : " + gen.getPublicKey());
+        BigInteger pubKey1 = gen.getPublicKey().x;
+        BigInteger pubKey2 = gen.getPublicKey().y;
+        System.out.println("String public key: " + DatatypeConverter.printHexBinary(getString(pubKey1).getBytes()) + " " + DatatypeConverter.printHexBinary(getString(pubKey2).getBytes()));
 
 //        String plain = "abcdefghijklmnopqrstuvwxyz-0123456789-ABCDEFGHIJKLMNOPQRSTUVWXYZ-!@#$%^&*()";
 //
